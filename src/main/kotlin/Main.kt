@@ -1,15 +1,20 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.ui.graphics.Color
+import java.awt.Color as AwtColor
+
 
 @Composable
 @Preview
@@ -34,13 +39,24 @@ fun App() {
             }
             infoItem()
         }
-        Toolbar()
+        Row() {
+            Toolbar()
+        }
+        Column() {
+            Row(modifier = Modifier.weight(1f)) {
+                EditingTextField()
+            }
+            Row(modifier = Modifier.weight(1f)) {
+                ResultField()
+            }
+        }
     }
 }
 
 fun main() = application {
+    val data = remember { Singletone }
     Window(onCloseRequest = ::exitApplication,
-    title= "M E O W") {
+    title= if(Singletone.isChangesSaved) "Компилятор" else "Компилятор*") {
         App()
     }
 }

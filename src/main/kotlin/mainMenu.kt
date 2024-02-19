@@ -1,18 +1,30 @@
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.material3.Button
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.awt.Desktop
+import java.io.File
+import java.io.IOException
+import java.net.URISyntaxException
 
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun fileItem(){
     var expanded by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
+    var isCreateCommand  by remember { mutableStateOf(false) }
+    var isOpenCommand  by remember { mutableStateOf(false) }
+    var isCloseCommand  by remember { mutableStateOf(false) }
+
     TextButton(onClick = { expanded = true },
         modifier = Modifier.height(32.dp)) {
         Text("Файл",
@@ -23,24 +35,86 @@ fun fileItem(){
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ){
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                if( Singletone.currentContent != "" && !Singletone.isChangesSaved){
+                    isCreateCommand = true
+                    showDialog = true}
+            }, modifier = Modifier.height(30.dp)){
                 Text("Создать", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                if(Singletone.currentContent != "" && !Singletone.isChangesSaved){
+                    isOpenCommand = true
+                    showDialog = true
+                                       }}, modifier = Modifier.height(30.dp)){
                 Text("Открыть", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                if(Singletone.currentFilePath == "")
+                    SaveFileAs()
+                else
+                    SaveFile()
+            }, modifier = Modifier.height(30.dp)){
                 Text("Сохранить", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                SaveFileAs()
+            }, modifier = Modifier.height(30.dp)){
                 Text("Сохранить как", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                if(Singletone.currentContent != "" && !Singletone.isChangesSaved) {
+                    isCloseCommand = true
+                    showDialog = true
+                }
+            }, modifier = Modifier.height(30.dp)){
                 Text("Выход", fontSize = 14.sp)
             }
         }
     }
-
+    if(showDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showDialog = false
+            },
+            text = { androidx.compose.material3.Text("Вы хотите сохранить изменения в файле?") },
+            buttons = {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = {
+                            showDialog = false
+                            SaveFileAs()
+                        }
+                    ) {
+                        androidx.compose.material3.Text("Сохранить", fontSize = 10.sp, textAlign = TextAlign.Center)
+                    }
+                    Button(
+                        onClick = {
+                            showDialog = false
+                            Singletone.currentContent = ""
+                            if (isCreateCommand)
+                                CreateFile()
+                            else if (isOpenCommand)
+                                OpenFile()
+                            else if (isCloseCommand)
+                                System.exit(0);
+                        }
+                    ) {
+                        androidx.compose.material3.Text("Не сохранять", fontSize = 10.sp)
+                    }
+                    Button(
+                        onClick = { showDialog = false }
+                    ) {
+                        androidx.compose.material3.Text("Отмена", fontSize = 10.sp)
+                    }
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -56,22 +130,36 @@ fun correctionItem(){
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ){
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                Singletone.undoRedoState.undo()
+            }, modifier = Modifier.height(30.dp)){
                 Text("Отменить", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                Singletone.undoRedoState.redo()
+            }, modifier = Modifier.height(30.dp)){
                 Text("Повторить", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                CopyToClipboard(Singletone.currentContent)
+                Singletone.currentContent = ""
+                                       }, modifier = Modifier.height(30.dp)){
                 Text("Вырезать", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                CopyToClipboard(Singletone.currentContent)
+                                       }, modifier = Modifier.height(30.dp)){
                 Text("Копировать", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                Singletone.currentContent = PasteFromClipboard()
+            }, modifier = Modifier.height(30.dp)){
                 Text("Вставить", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {
+                Singletone.currentContent = ""
+                Singletone.undoRedoState.input = TextFieldValue("")
+            }, modifier = Modifier.height(30.dp)){
                 Text("Удалить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
@@ -128,6 +216,7 @@ fun textItem(){
 @Composable
 fun infoItem(){
     var expanded by remember { mutableStateOf(false) }
+    val uriHandler = LocalUriHandler.current
     TextButton(onClick = { expanded = true },
         modifier = Modifier.height(32.dp)) {
         Text("Справка",
@@ -138,10 +227,32 @@ fun infoItem(){
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\Info.html"
+
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+            }, modifier = Modifier.height(30.dp)) {
                 Text("Вызов справки", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\About.html"
+
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+            }, modifier = Modifier.height(30.dp)) {
                 Text("О программе", fontSize = 14.sp)
             }
         }
