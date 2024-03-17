@@ -1,3 +1,6 @@
+package src.main.kotlin.view
+
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material3.Button
@@ -10,6 +13,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import src.main.kotlin.model.ScannerViewModel
 import java.awt.Desktop
 import java.io.File
 import java.io.IOException
@@ -18,7 +22,7 @@ import java.net.URISyntaxException
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun fileItem(){
+fun fileItem(viewModel: ScannerViewModel){
     var expanded by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     var isCreateCommand  by remember { mutableStateOf(false) }
@@ -36,34 +40,34 @@ fun fileItem(){
             onDismissRequest = { expanded = false }
         ){
             DropdownMenuItem(onClick = {
-                if( Singletone.currentContent != "" && !Singletone.isChangesSaved){
+                if( viewModel.currentContent != "" && !viewModel.isChangesSaved){
                     isCreateCommand = true
                     showDialog = true}
             }, modifier = Modifier.height(30.dp)){
                 Text("Создать", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                if(Singletone.currentContent != "" && !Singletone.isChangesSaved){
+                if(viewModel.currentContent != "" && !viewModel.isChangesSaved){
                     isOpenCommand = true
                     showDialog = true
                                        }}, modifier = Modifier.height(30.dp)){
                 Text("Открыть", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                if(Singletone.currentFilePath == "")
-                    SaveFileAs()
+                if(viewModel.currentFilePath == "")
+                    SaveFileAs(viewModel)
                 else
-                    SaveFile()
+                    SaveFile(viewModel)
             }, modifier = Modifier.height(30.dp)){
                 Text("Сохранить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                SaveFileAs()
+                SaveFileAs(viewModel)
             }, modifier = Modifier.height(30.dp)){
                 Text("Сохранить как", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                if(Singletone.currentContent != "" && !Singletone.isChangesSaved) {
+                if(viewModel.currentContent != "" && !viewModel.isChangesSaved) {
                     isCloseCommand = true
                     showDialog = true
                 }
@@ -87,7 +91,7 @@ fun fileItem(){
                     Button(
                         onClick = {
                             showDialog = false
-                            SaveFileAs()
+                            SaveFileAs(viewModel)
                         }
                     ) {
                         androidx.compose.material3.Text("Сохранить", fontSize = 10.sp, textAlign = TextAlign.Center)
@@ -95,11 +99,11 @@ fun fileItem(){
                     Button(
                         onClick = {
                             showDialog = false
-                            Singletone.currentContent = ""
+                            viewModel.currentContent = ""
                             if (isCreateCommand)
                                 CreateFile()
                             else if (isOpenCommand)
-                                OpenFile()
+                                OpenFile(viewModel)
                             else if (isCloseCommand)
                                 System.exit(0);
                         }
@@ -118,7 +122,7 @@ fun fileItem(){
 }
 
 @Composable
-fun correctionItem(){
+fun correctionItem(viewModel: ScannerViewModel){
     var expanded by remember { mutableStateOf(false) }
     TextButton(onClick = { expanded = true },
         modifier = Modifier.height(32.dp)) {
@@ -131,34 +135,34 @@ fun correctionItem(){
             onDismissRequest = { expanded = false }
         ){
             DropdownMenuItem(onClick = {
-                Singletone.undoRedoState.undo()
+                viewModel.undoRedoState.undo()
             }, modifier = Modifier.height(30.dp)){
                 Text("Отменить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                Singletone.undoRedoState.redo()
+                viewModel.undoRedoState.redo()
             }, modifier = Modifier.height(30.dp)){
                 Text("Повторить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                CopyToClipboard(Singletone.currentContent)
-                Singletone.currentContent = ""
+                CopyToClipboard(viewModel.currentContent)
+                viewModel.currentContent = ""
                                        }, modifier = Modifier.height(30.dp)){
                 Text("Вырезать", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                CopyToClipboard(Singletone.currentContent)
+                CopyToClipboard(viewModel.currentContent)
                                        }, modifier = Modifier.height(30.dp)){
                 Text("Копировать", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                Singletone.currentContent = PasteFromClipboard()
+                viewModel.currentContent = PasteFromClipboard()
             }, modifier = Modifier.height(30.dp)){
                 Text("Вставить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
-                Singletone.currentContent = ""
-                Singletone.undoRedoState.input = TextFieldValue("")
+                viewModel.currentContent = ""
+                viewModel.undoRedoState.input = TextFieldValue("")
             }, modifier = Modifier.height(30.dp)){
                 Text("Удалить", fontSize = 14.sp)
             }

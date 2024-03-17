@@ -1,3 +1,5 @@
+package src.main.kotlin.view
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.ExperimentalMaterialApi
@@ -15,6 +17,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import src.main.kotlin.model.ScannerViewModel
 import java.awt.Toolkit
 import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.DataFlavor
@@ -27,7 +30,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Toolbar(){
+fun Toolbar(viewModel: ScannerViewModel){
     var showDialog by remember { mutableStateOf(false) }
     var isCreateCommand  by remember { mutableStateOf(false) }
     var isOpenCommand  by remember { mutableStateOf(false) }
@@ -35,7 +38,7 @@ fun Toolbar(){
     Row(horizontalArrangement = Arrangement.Start) {
         Spacer(modifier = Modifier.height(5.dp))
        IconButton(onClick = {
-           if( Singletone.currentContent != "" && !Singletone.isChangesSaved){
+           if( viewModel.currentContent != "" && !viewModel.isChangesSaved){
                isCreateCommand = true
                showDialog = true
               }
@@ -45,7 +48,7 @@ fun Toolbar(){
         }
 
         IconButton(onClick = {
-            if(Singletone.currentContent != "" && !Singletone.isChangesSaved){
+            if(viewModel.currentContent != "" && !viewModel.isChangesSaved){
                 isOpenCommand = true
             showDialog = true
         }
@@ -54,43 +57,43 @@ fun Toolbar(){
             Icon(Icons.Outlined.FileOpen, "Open file")
         }
         IconButton(onClick = {
-            if(Singletone.currentFilePath == "")
-                SaveFileAs()
+            if(viewModel.currentFilePath == "")
+                SaveFileAs(viewModel)
             else
-            SaveFile() }, modifier = Modifier.height(14.dp))
+            SaveFile(viewModel) }, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Outlined.Save, "Save file")
         }
         IconButton(onClick = {
-            Singletone.undoRedoState.undo()
+            viewModel.undoRedoState.undo()
         }, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Default.TurnLeft, "Cancel changes")
         }
         IconButton(onClick = {
-            Singletone.undoRedoState.redo()
+            viewModel.undoRedoState.redo()
         }, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Default.TurnRight, "Repeat changes")
         }
         IconButton(onClick = {
-            CopyToClipboard(Singletone.currentContent)
+            CopyToClipboard(viewModel.currentContent)
                              }, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Default.ContentCopy, "Copy")
         }
         IconButton(onClick = {
-            CopyToClipboard(Singletone.currentContent)
-            Singletone.currentContent = ""
-            Singletone.undoRedoState.input = TextFieldValue("")
+            CopyToClipboard(viewModel.currentContent)
+            viewModel.currentContent = ""
+            viewModel.undoRedoState.input = TextFieldValue("")
 
         }, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Default.ContentCut, "Cut")
         }
         IconButton(onClick = {
-            Singletone.currentContent = PasteFromClipboard()
-            Singletone.undoRedoState.onInput(TextFieldValue(PasteFromClipboard()))
+            viewModel.currentContent = PasteFromClipboard()
+            viewModel.undoRedoState.onInput(TextFieldValue(PasteFromClipboard()))
                              }, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Default.ContentPaste, "Paste")
@@ -123,18 +126,19 @@ fun Toolbar(){
                         Button(
                             onClick = {
                                 showDialog = false
-                                SaveFileAs()}
+                                SaveFileAs(viewModel)
+                            }
                         ) {
                             Text("Сохранить", fontSize = 10.sp, textAlign = TextAlign.Center)
                         }
                         Button(
                             onClick = {
                                 showDialog = false
-                                Singletone.currentContent = ""
+                                viewModel.currentContent = ""
                                 if(isCreateCommand)
                                     CreateFile()
                                 else if(isOpenCommand)
-                                    OpenFile()
+                                    OpenFile(viewModel)
                             }
                         ) {
                             Text("Не сохранять", fontSize = 10.sp)
@@ -184,7 +188,7 @@ fun CreateFile(){
     }
 }
 
-fun OpenFile(){
+fun OpenFile(viewModel: ScannerViewModel){
     UIManager.put("FileChooser.cancelButtonText", "Отмена");
     UIManager.put("FileChooser.saveButtonText", "Открыть");
     UIManager.put("FileChooser.saveInLabelText", "Открыть из: ");
@@ -216,18 +220,18 @@ fun OpenFile(){
                     line = reader.readLine()
                 }
 
-                Singletone.currentContent = content.toString()
-                Singletone.isChangesSaved = true
-                Singletone.currentFilePath = selectedFile.absolutePath
+                viewModel.currentContent = content.toString()
+                viewModel.isChangesSaved = true
+                viewModel.currentFilePath = selectedFile.absolutePath
                 println("Файл открыт: ${selectedFile.absolutePath}")
-                println(Singletone.currentFilePath)
+                println(viewModel.currentFilePath)
             }
         }catch (e: IOException) {
             e.printStackTrace()
         }
     }
 }
-fun SaveFileAs(){
+fun SaveFileAs(viewModel: ScannerViewModel){
     UIManager.put("FileChooser.cancelButtonText", "Отмена");
     UIManager.put("FileChooser.saveButtonText", "Сохранить");
     UIManager.put("FileChooser.saveInLabelText", "Сохранить в: ");
@@ -252,11 +256,11 @@ fun SaveFileAs(){
         }
         try {
             FileWriter(selectedFile).use { writer ->
-                writer.write(Singletone.currentContent)
+                writer.write(viewModel.currentContent)
                 println("Файл сохранен: " + selectedFile.absolutePath)
-                Singletone.isChangesSaved=true
-                Singletone.currentFilePath = selectedFile.absolutePath
-                println(Singletone.currentFilePath)
+                viewModel.isChangesSaved =true
+                viewModel.currentFilePath = selectedFile.absolutePath
+                println(viewModel.currentFilePath)
             }
         } catch (e: IOException) {
             e.printStackTrace()
@@ -265,13 +269,13 @@ fun SaveFileAs(){
 }
 
 
-fun SaveFile(){
-        var selectedFile = Singletone.currentFilePath
+fun SaveFile(viewModel: ScannerViewModel){
+        var selectedFile = viewModel.currentFilePath
 
         try {
             FileWriter(selectedFile).use { writer ->
-                writer.write(Singletone.currentContent)
-                Singletone.isChangesSaved=true
+                writer.write(viewModel.currentContent)
+                viewModel.isChangesSaved =true
             }
         } catch (e: IOException) {
             e.printStackTrace()

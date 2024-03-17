@@ -1,22 +1,23 @@
+package src.main.kotlin.view
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import src.main.kotlin.model.ScannerViewModel
 
 @Composable
-fun ResultField(){
+public fun ResultField(viewModel: ScannerViewModel){
     Column(modifier = Modifier.fillMaxSize().padding(23.dp)){
-        val text = remember{ mutableStateOf("") }
         OutlinedTextField(
-            text.value,
+            viewModel.scanResultText,
             enabled = false,
             modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-            textStyle  = TextStyle(fontSize = 16.sp),
+            textStyle  = TextStyle(fontSize = 14.sp, color = Color.Black),
             onValueChange = {
             }
         )

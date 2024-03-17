@@ -1,10 +1,10 @@
-
+package src.main.kotlin.model
 import androidx.compose.runtime.*
 
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 
-class UndoRedoState {
+public class UndoRedoState {
 
     var input: TextFieldValue by mutableStateOf(TextFieldValue(""))
     var undoHistory = ArrayDeque<TextFieldValue?>()
