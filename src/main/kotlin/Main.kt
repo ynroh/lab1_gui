@@ -17,7 +17,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import src.main.kotlin.model.Scanner
-import src.main.kotlin.model.ScannerViewModel
+import viewModel.ScannerViewModel
 import src.main.kotlin.model.UndoRedoState
 import src.main.kotlin.view.*
 

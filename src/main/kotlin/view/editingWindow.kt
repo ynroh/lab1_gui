@@ -8,11 +8,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import src.main.kotlin.model.ScannerViewModel
+import viewModel.ScannerViewModel
 
 @Composable
 fun EditingTextField(viewModel: ScannerViewModel){
@@ -41,7 +40,6 @@ fun EditingTextField(viewModel: ScannerViewModel){
                     onValueChange = {
                         textState.value = it
                         viewModel.currentContent = it
-                        println("before ${viewModel.currentContent} after ${it}")
                         viewModel.isChangesSaved = false
                         val numberOfLines = it.count { char -> char == '\n' } + 1
                         lineCounter = (1..numberOfLines).joinToString("\n") { it.toString() }

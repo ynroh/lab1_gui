@@ -1,5 +1,7 @@
 package src.main.kotlin.model
 
+import viewModel.ScannerViewModel
+
 public class Scanner {
     private  var Lexemes: MutableList<Lexeme> = mutableListOf()
     fun analyzeCode(viewModel: ScannerViewModel){

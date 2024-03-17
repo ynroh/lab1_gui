@@ -1,7 +1,7 @@
-package src.main.kotlin.model
+package viewModel
 
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import src.main.kotlin.model.UndoRedoState
 
 
 class ScannerViewModel(undoRedoState: UndoRedoState) {
