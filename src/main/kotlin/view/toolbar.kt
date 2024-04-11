@@ -17,7 +17,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import viewModel.ScannerViewModel
+import src.main.kotlin.model.Scanner
+import src.main.kotlin.model.parser.states.DefinitionState
+import src.main.kotlin.viewModel.ScannerViewModel
 import java.awt.Toolkit
 import java.awt.datatransfer.Clipboard
 import java.awt.datatransfer.DataFlavor
@@ -30,7 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Toolbar(viewModel: ScannerViewModel){
+fun Toolbar(viewModel: ScannerViewModel, scanner: Scanner){
     var showDialog by remember { mutableStateOf(false) }
     var isCreateCommand  by remember { mutableStateOf(false) }
     var isOpenCommand  by remember { mutableStateOf(false) }
@@ -98,7 +100,11 @@ fun Toolbar(viewModel: ScannerViewModel){
         {
             Icon(Icons.Default.ContentPaste, "Paste")
         }
-        IconButton(onClick = {/*TO DO*/ }, modifier = Modifier.height(14.dp))
+        IconButton(onClick = {
+            scanner.analyzeCode(viewModel)
+            if(viewModel.lexemes.size !=0){
+                viewModel.currentState = DefinitionState()
+                viewModel.currentState.Handle(viewModel)}}, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Default.PlayArrow, "Play")
         }

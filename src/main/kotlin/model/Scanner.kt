@@ -1,13 +1,35 @@
 package src.main.kotlin.model
 
-import viewModel.ScannerViewModel
+
+import src.main.kotlin.viewModel.ScannerViewModel
 
 public class Scanner {
-    private  var Lexemes: MutableList<Lexeme> = mutableListOf()
+    //private  var Lexemes: MutableList<Lexeme> = mutableListOf()
+
+    fun removeSpacesExceptAfterKeywords(strinput: String): String {
+        val input = strinput.replace("\\s+".toRegex(), " ")
+        val keywords = setOf("fun", "return")
+        val builder = StringBuilder()
+        var isSpaceAllowed = false
+
+        for (char in input) {
+            if (char.isWhitespace()) {
+                if (isSpaceAllowed) {
+                    builder.append(char)
+                }
+            } else {
+                builder.append(char)
+                isSpaceAllowed = keywords.any { builder.endsWith(it) }
+            }
+        }
+
+        return builder.toString()
+    }
     fun analyzeCode(viewModel: ScannerViewModel){
-        var inputString = viewModel.currentContent
-        Lexemes.clear()
-        println("nnn")
+        val inputString = viewModel.currentContent
+        println("AA " + inputString)
+        viewModel.currentContent = inputString
+        viewModel.lexemes.clear()
         var bitOfCode = String()
         var i = 0
         while (i < inputString.length){
@@ -24,14 +46,14 @@ public class Scanner {
 
                 when (bitOfCode)
                 {
-                    "fun" -> Lexemes.add(Lexeme(1, LexemeType.KEY_WORD, bitOfCode, firstChar+1, i+1))
-                    "Int" -> Lexemes.add(Lexeme(2, LexemeType.KEY_WORD, bitOfCode, firstChar+1, i+1))
-                    "return" -> Lexemes.add(Lexeme(3, LexemeType.KEY_WORD, bitOfCode, firstChar+1, i+1))
-                    "Double" -> Lexemes.add(Lexeme(4, LexemeType.KEY_WORD, bitOfCode, firstChar+1, i+1))
-                    "Float" -> Lexemes.add(Lexeme(5, LexemeType.KEY_WORD, bitOfCode, firstChar+1, i+1))
-                    "Long" -> Lexemes.add(Lexeme(6, LexemeType.KEY_WORD, bitOfCode, firstChar+1, i+1))
+                    "fun" -> viewModel.lexemes.add(Lexeme(1, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
+                    "Int" -> viewModel.lexemes.add(Lexeme(2, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
+                    "return" -> viewModel.lexemes.add(Lexeme(3, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
+                    "Double" -> viewModel.lexemes.add(Lexeme(4, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
+                    "Float" -> viewModel.lexemes.add(Lexeme(5, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
+                    "Long" -> viewModel.lexemes.add(Lexeme(6, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
                     else -> {
-                        Lexemes.add(Lexeme(15, LexemeType.IDENTIFIER, bitOfCode, firstChar+1, i+1))
+                        viewModel.lexemes.add(Lexeme(15, LexemeType.IDENTIFIER, bitOfCode, firstChar, i))
                     }
                 }
                 bitOfCode = String()
@@ -46,7 +68,7 @@ public class Scanner {
                     bitOfCode += inputString[i];
                 }
 
-                Lexemes.add(Lexeme(20, LexemeType.INVALID_LEXEME, bitOfCode, firstChar+1, i+1))
+                viewModel.lexemes.add(Lexeme(20, LexemeType.INVALID_LEXEME, bitOfCode, firstChar, i))
 
                 bitOfCode = String()
             }
@@ -56,10 +78,10 @@ public class Scanner {
 
                     when (inputString[i].toString())
                     {
-                        "+" -> Lexemes.add(Lexeme(16, LexemeType.OPERATOR, bitOfCode, firstChar+1, i+1))
-                        "-" -> Lexemes.add(Lexeme(17, LexemeType.OPERATOR, bitOfCode, firstChar+1, i+1))
-                        "*" -> Lexemes.add(Lexeme(18, LexemeType.OPERATOR, bitOfCode, firstChar+1, i+1))
-                        "/" -> Lexemes.add(Lexeme(19, LexemeType.OPERATOR, bitOfCode, firstChar+1, i+1))
+                        "+" -> viewModel.lexemes.add(Lexeme(16, LexemeType.OPERATOR, bitOfCode, firstChar, i))
+                        "-" -> viewModel.lexemes.add(Lexeme(17, LexemeType.OPERATOR, bitOfCode, firstChar, i))
+                        "*" -> viewModel.lexemes.add(Lexeme(18, LexemeType.OPERATOR, bitOfCode, firstChar, i))
+                        "/" -> viewModel.lexemes.add(Lexeme(19, LexemeType.OPERATOR, bitOfCode, firstChar, i))
                    }
                 bitOfCode = String()
             }
@@ -68,13 +90,13 @@ public class Scanner {
                 val firstChar = i;
 
                 when(inputString[i].toString()) {
-                    " " -> Lexemes.add(Lexeme(7, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
-                    "(" -> Lexemes.add(Lexeme(8, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
-                    ")" -> Lexemes.add(Lexeme(9, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
-                    "{" -> Lexemes.add(Lexeme(10, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
-                    "}" -> Lexemes.add(Lexeme(11, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
-                    ":" -> Lexemes.add(Lexeme(12, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
-                    "," -> Lexemes.add(Lexeme(14, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
+                    " " -> viewModel.lexemes.add(Lexeme(7, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
+                    "(" -> viewModel.lexemes.add(Lexeme(8, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
+                    ")" -> viewModel.lexemes.add(Lexeme(9, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
+                    "{" -> viewModel.lexemes.add(Lexeme(10, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
+                    "}" -> viewModel.lexemes.add(Lexeme(11, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
+                    ":" -> viewModel.lexemes.add(Lexeme(12, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
+                    "," -> viewModel.lexemes.add(Lexeme(14, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
 
                 }
                 bitOfCode = String()
@@ -90,17 +112,25 @@ public class Scanner {
                 }
 
                 if(bitOfCode == "\n"){
-                     Lexemes.add(Lexeme(13, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
+                    viewModel.lexemes.add(Lexeme(13, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
                 }
                 else {
-                    Lexemes.add(Lexeme(20, LexemeType.INVALID_LEXEME, bitOfCode, firstChar+1, i+1))
+                    viewModel.lexemes.add(Lexeme(20, LexemeType.INVALID_LEXEME, bitOfCode, firstChar+1, i+1))
 
                 }
                 bitOfCode = String()
             }
+            else {
+                val firstChar = i
+                while ((i + 1) < inputString.length && (!inputString[i + 1].isLetterOrDigit() && !isOperator(inputString[i + 1]) && !isSeparator(inputString[i + 1]))) {
+                    i++
+                    bitOfCode += inputString[i]
+                }
+                viewModel.lexemes.add(Lexeme(20, LexemeType.INVALID_LEXEME, bitOfCode, firstChar, i))
+                bitOfCode = ""
+            }
             i++
         }
-
         printResult(viewModel)
     }
 
@@ -118,7 +148,7 @@ public class Scanner {
 
     private fun printResult(viewModel: ScannerViewModel){
         var result: String = String()
-        for (lexeme in Lexemes) {
+        for (lexeme in viewModel.lexemes) {
             when(lexeme.getType()){
                 LexemeType.KEY_WORD -> result +=
                     "УСЛОВНЫЙ КОД: ${lexeme.getConditionalCode()}, " +

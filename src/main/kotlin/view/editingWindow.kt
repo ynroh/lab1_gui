@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import viewModel.ScannerViewModel
+import src.main.kotlin.viewModel.ScannerViewModel
 
 @Composable
 fun EditingTextField(viewModel: ScannerViewModel){
@@ -33,7 +33,8 @@ fun EditingTextField(viewModel: ScannerViewModel){
             }
             Column(modifier = Modifier.weight(1f)){
                 OutlinedTextField(
-                    value = textState.value,
+                    //value = textState.value,
+                    value = viewModel.currentContent,
                     minLines = 18,
                     modifier = Modifier.fillMaxWidth(),
                     textStyle  = androidx.compose.ui.text.TextStyle(fontSize = 16.sp),

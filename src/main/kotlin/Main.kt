@@ -17,15 +17,15 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import src.main.kotlin.model.Scanner
-import viewModel.ScannerViewModel
+import src.main.kotlin.viewModel.ScannerViewModel
 import src.main.kotlin.model.UndoRedoState
 import src.main.kotlin.view.*
 
 
 @Composable
 @Preview
-fun App(viewModel: ScannerViewModel) {
-    val scanner = Scanner()
+fun App(viewModel: ScannerViewModel, scanner: Scanner) {
+
 
     Column() {
         Row(
@@ -36,7 +36,9 @@ fun App(viewModel: ScannerViewModel) {
             textItem()
             TextButton(
                 onClick = {
-                    scanner.analyzeCode(viewModel)},
+                    scanner.analyzeCode(viewModel)
+                    if(viewModel.lexemes.size !=0){
+                    viewModel.currentState.Handle(viewModel)}},
                 modifier = Modifier.height(30.dp)
             ) {
                 Text(
@@ -48,7 +50,7 @@ fun App(viewModel: ScannerViewModel) {
             infoItem()
         }
         Row() {
-            Toolbar(viewModel)
+            Toolbar(viewModel, scanner)
         }
         Column() {
             Row(modifier = Modifier.weight(1f)) {
@@ -63,14 +65,17 @@ fun App(viewModel: ScannerViewModel) {
 
 
 fun main() = application {
-    val undoRedoState: UndoRedoState = UndoRedoState()
-    val viewModel: ScannerViewModel = ScannerViewModel(undoRedoState)
+    val undoRedoState = UndoRedoState()
+    val viewModel = ScannerViewModel(undoRedoState)
+    val scanner = Scanner()
+
+
     Window(onCloseRequest = {
         if(viewModel.currentContent!="" && !viewModel.isChangesSaved)
-        SaveFileAs(viewModel)
+            SaveFileAs(viewModel)
         System.exit(0) },
     title= if(viewModel.isChangesSaved) "Компилятор" else "Компилятор*") {
-        App(viewModel)
+        App(viewModel,scanner)
     }
 
 }

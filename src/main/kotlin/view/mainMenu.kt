@@ -13,7 +13,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import viewModel.ScannerViewModel
+import src.main.kotlin.viewModel.ScannerViewModel
 import java.awt.Desktop
 import java.io.File
 import java.io.IOException
