@@ -21,7 +21,7 @@ class FunNameState: IState {
                 else i++
             }
         if(!flag)
-            viewModel.skipIncorrectLexemes(viewModel.lexemes[viewModel.expectedLexeme].getEndIndex(), viewModel.expectedLexeme)
+            viewModel.skipIncorrectLexemes(viewModel.expectedLexeme, viewModel.expectedLexeme)
         }
 
         else {
@@ -29,7 +29,7 @@ class FunNameState: IState {
         }
         if(viewModel.lexemes.size > viewModel.expectedLexeme) {
             if (viewModel.lexemes[viewModel.expectedLexeme].getValue() != viewModel.expectedInput[3])
-                viewModel.skipIncorrectLexemes(viewModel.lexemes[viewModel.expectedLexeme].getEndIndex(), 3)
+                viewModel.skipIncorrectLexemes(viewModel.expectedLexeme, 3)
 
             // viewModel.currentState = OpenArgState()
         }

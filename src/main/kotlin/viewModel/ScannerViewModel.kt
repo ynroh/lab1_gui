@@ -29,9 +29,9 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
 
             while (index1 < lexemes.size && index2 < expectedInput.size) {
                 if (lexemes[index1].getValue() == expectedInput[index2]) {
-                    expectedLexeme = index1
+                    expectedLexeme = index1+1
                     parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}", currentIndex, lexemes[index1-1].getEndIndex()))
-                    println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${currentIndex} по ${lexemes[index1-1].getEndIndex()}")
+                    println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${lexemes[index1-1].getEndIndex()}")
                     break
                 }
                 index1++
@@ -43,7 +43,7 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
 
             if (index1 >= lexemes.size || index2 >= expectedInput.size) {
                 parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}", currentIndex, lexemes.last().getEndIndex()))
-                println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${currentIndex} по ${lexemes.last().getEndIndex()}")
+                println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${lexemes[currentIndex].getStartIndex()+lexemes[currentIndex].getValue().length}")
             }
     }
 }

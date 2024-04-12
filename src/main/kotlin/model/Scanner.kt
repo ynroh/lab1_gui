@@ -6,25 +6,6 @@ import src.main.kotlin.viewModel.ScannerViewModel
 public class Scanner {
     //private  var Lexemes: MutableList<Lexeme> = mutableListOf()
 
-    fun removeSpacesExceptAfterKeywords(strinput: String): String {
-        val input = strinput.replace("\\s+".toRegex(), " ")
-        val keywords = setOf("fun", "return")
-        val builder = StringBuilder()
-        var isSpaceAllowed = false
-
-        for (char in input) {
-            if (char.isWhitespace()) {
-                if (isSpaceAllowed) {
-                    builder.append(char)
-                }
-            } else {
-                builder.append(char)
-                isSpaceAllowed = keywords.any { builder.endsWith(it) }
-            }
-        }
-
-        return builder.toString()
-    }
     fun analyzeCode(viewModel: ScannerViewModel){
         val inputString = viewModel.currentContent
         println("AA " + inputString)
@@ -46,12 +27,12 @@ public class Scanner {
 
                 when (bitOfCode)
                 {
-                    "fun" -> viewModel.lexemes.add(Lexeme(1, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
-                    "Int" -> viewModel.lexemes.add(Lexeme(2, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
-                    "return" -> viewModel.lexemes.add(Lexeme(3, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
-                    "Double" -> viewModel.lexemes.add(Lexeme(4, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
-                    "Float" -> viewModel.lexemes.add(Lexeme(5, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
-                    "Long" -> viewModel.lexemes.add(Lexeme(6, LexemeType.KEY_WORD, bitOfCode, firstChar, i))
+                    "fun" -> viewModel.lexemes.add(Lexeme(1, LexemeType.KEY_WORD_FUN, bitOfCode, firstChar, i))
+                    "Int" -> viewModel.lexemes.add(Lexeme(2, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
+                    "return" -> viewModel.lexemes.add(Lexeme(3, LexemeType.KEY_WORD_RETURN, bitOfCode, firstChar, i))
+                    "Double" -> viewModel.lexemes.add(Lexeme(4, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
+                    "Float" -> viewModel.lexemes.add(Lexeme(5, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
+                    "Long" -> viewModel.lexemes.add(Lexeme(6, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
                     else -> {
                         viewModel.lexemes.add(Lexeme(15, LexemeType.IDENTIFIER, bitOfCode, firstChar, i))
                     }
@@ -90,13 +71,13 @@ public class Scanner {
                 val firstChar = i;
 
                 when(inputString[i].toString()) {
-                    " " -> viewModel.lexemes.add(Lexeme(7, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
-                    "(" -> viewModel.lexemes.add(Lexeme(8, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
-                    ")" -> viewModel.lexemes.add(Lexeme(9, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
-                    "{" -> viewModel.lexemes.add(Lexeme(10, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
-                    "}" -> viewModel.lexemes.add(Lexeme(11, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
-                    ":" -> viewModel.lexemes.add(Lexeme(12, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
-                    "," -> viewModel.lexemes.add(Lexeme(14, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
+                    " " -> viewModel.lexemes.add(Lexeme(7, LexemeType.SPACE, bitOfCode, firstChar, i))
+                    "(" -> viewModel.lexemes.add(Lexeme(8, LexemeType.OPEN_C_SCOPE, bitOfCode, firstChar, i))
+                    ")" -> viewModel.lexemes.add(Lexeme(9, LexemeType.CLOSE_C_SCOPE, bitOfCode, firstChar, i))
+                    "{" -> viewModel.lexemes.add(Lexeme(10, LexemeType.OPEN_F_SCOPE, bitOfCode, firstChar, i))
+                    "}" -> viewModel.lexemes.add(Lexeme(11, LexemeType.CLOSE_F_SCOPE, bitOfCode, firstChar, i))
+                    ":" -> viewModel.lexemes.add(Lexeme(12, LexemeType.COLON, bitOfCode, firstChar, i))
+                    "," -> viewModel.lexemes.add(Lexeme(14, LexemeType.COMMA, bitOfCode, firstChar, i))
 
                 }
                 bitOfCode = String()
@@ -149,33 +130,11 @@ public class Scanner {
     private fun printResult(viewModel: ScannerViewModel){
         var result: String = String()
         for (lexeme in viewModel.lexemes) {
-            when(lexeme.getType()){
-                LexemeType.KEY_WORD -> result +=
-                    "УСЛОВНЫЙ КОД: ${lexeme.getConditionalCode()}, " +
-                        "ТИП ЛЕКСЕМЫ: ключевое слово," +
+            result +=
+                "УСЛОВНЫЙ КОД: ${lexeme.getConditionalCode()}, " +
+                        "ТИП ЛЕКСЕМЫ: ${lexeme.getType()}, " +
                         "ЛЕКСЕМА: ${lexeme.getValue()} " +
-                            "С ${lexeme.getStartIndex()} ПО ${lexeme.getEndIndex()} СИМВОЛ\n"
-                LexemeType.IDENTIFIER -> result +=
-                    "УСЛОВНЫЙ КОД: ${lexeme.getConditionalCode()}, " +
-                            "ТИП ЛЕКСЕМЫ: идентификатор," +
-                            "ЛЕКСЕМА: ${lexeme.getValue()} " +
-                            "С ${lexeme.getStartIndex()} ПО ${lexeme.getEndIndex()} СИМВОЛ\n"
-                LexemeType.SEPARATOR -> result +=
-                    "УСЛОВНЫЙ КОД: ${lexeme.getConditionalCode()}, " +
-                            "ТИП ЛЕКСЕМЫ: разделитель," +
-                            " ЛЕКСЕМА: ${lexeme.getValue()}, " +
-                            "С ${lexeme.getStartIndex()} ПО ${lexeme.getEndIndex()} СИМВОЛ\n"
-                LexemeType.OPERATOR -> result +=
-                    "УСЛОВНЫЙ КОД: ${lexeme.getConditionalCode()}, " +
-                            "ТИП ЛЕКСЕМЫ: оператор," +
-                            " ЛЕКСЕМА: ${lexeme.getValue()}, " +
-                            "С ${lexeme.getStartIndex()} ПО ${lexeme.getEndIndex()} СИМВОЛ\n"
-                LexemeType.INVALID_LEXEME -> result +=
-                    "УСЛОВНЫЙ КОД: ${lexeme.getConditionalCode()}, " +
-                            "ТИП ЛЕКСЕМЫ: ошибка," +
-                            " ЛЕКСЕМА: ${lexeme.getValue()}, " +
-                            "С ${lexeme.getStartIndex()} ПО ${lexeme.getEndIndex()} СИМВОЛ\n"
-            }
+                        "С ${lexeme.getStartIndex()} ПО ${lexeme.getEndIndex()} СИМВОЛ\n"
 
             viewModel.scanResultText = result
         }

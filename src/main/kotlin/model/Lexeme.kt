@@ -1,10 +1,19 @@
 package src.main.kotlin.model
 enum class LexemeType{
-    KEY_WORD,
-    SEPARATOR,
+    KEY_WORD_FUN,
+    SPACE,
+    OPEN_C_SCOPE,
+    CLOSE_C_SCOPE,
+    COLON,
+    KEY_WORD_TYPE,
+    COMMA,
+    OPEN_F_SCOPE,
+    CLOSE_F_SCOPE,
+    KEY_WORD_RETURN,
     IDENTIFIER,
     OPERATOR,
-    INVALID_LEXEME
+    INVALID_LEXEME,
+    SEPARATOR
 }
 public class Lexeme(
     private val conditionalCode: Int,
