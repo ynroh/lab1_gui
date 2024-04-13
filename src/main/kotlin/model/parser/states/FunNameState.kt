@@ -7,31 +7,24 @@ import src.main.kotlin.model.parser.intarfaces.IState
 import src.main.kotlin.viewModel.ScannerViewModel
 class FunNameState: IState {
     override fun Handle(viewModel: ScannerViewModel){
-        var i = viewModel.expectedLexeme+1
-        var flag = false
-        if(viewModel.lexemes[viewModel.expectedLexeme].getType() != LexemeType.IDENTIFIER){
-            while(i <  viewModel.lexemes.size){
-                if(viewModel.lexemes[i].getType()==LexemeType.IDENTIFIER) {
-                    flag = true
-                    viewModel.parserErrors.add(ParserError(value = "Неожиданный ввод",viewModel.expectedLexeme,i))
-                    println("Неожиданный ввод c ${viewModel.lexemes[viewModel.expectedLexeme].getStartIndex()} по ${viewModel.lexemes[i-1].getEndIndex()}")
-                    viewModel.expectedLexeme = i+1
-                    break
-                }
-                else i++
+        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.IDENTIFIER) {
+            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 1)
+        }
+        else{
+            viewModel.checkedLexeme ++
+        }
+        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.OPEN_C_SCOPE) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 2)
             }
-        if(!flag)
-            viewModel.skipIncorrectLexemes(viewModel.expectedLexeme, viewModel.expectedLexeme)
+            else{
+                viewModel.checkedLexeme ++
+            }
         }
 
-        else {
-            viewModel.expectedLexeme++
-        }
-        if(viewModel.lexemes.size > viewModel.expectedLexeme) {
-            if (viewModel.lexemes[viewModel.expectedLexeme].getValue() != viewModel.expectedInput[3])
-                viewModel.skipIncorrectLexemes(viewModel.expectedLexeme, 3)
-
-            // viewModel.currentState = OpenArgState()
+        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
+            viewModel.currentState = OpenArgState()
+            viewModel.currentState.Handle(viewModel)
         }
     }
 }

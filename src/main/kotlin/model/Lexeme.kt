@@ -1,7 +1,6 @@
 package src.main.kotlin.model
 enum class LexemeType{
     KEY_WORD_FUN,
-    SPACE,
     OPEN_C_SCOPE,
     CLOSE_C_SCOPE,
     COLON,

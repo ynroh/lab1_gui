@@ -5,23 +5,17 @@ import src.main.kotlin.viewModel.ScannerViewModel
 
 class DefinitionState: IState{
     override fun Handle(viewModel: ScannerViewModel){
-        var expectedIndex: Int = 0
-        if (viewModel.lexemes[0].getValue() != viewModel.expectedInput[0]) {
+        var checkedIndex: Int = 0
+        if (viewModel.lexemes[0].getType() != viewModel.expectedInput[0]) {
             viewModel.skipIncorrectLexemes(0, 0)
-            expectedIndex=viewModel.expectedLexeme
+            checkedIndex=viewModel.checkedLexeme
         }
         else {
-            expectedIndex +=1
+            viewModel.checkedLexeme +=1
         }
-        if(viewModel.lexemes.size > expectedIndex) {
-            if (viewModel.lexemes[expectedIndex].getValue() != " ") {
-                viewModel.skipIncorrectLexemes(expectedIndex, 1)
-            } else {
-                viewModel.expectedLexeme = 2
-            }
-           /* viewModel.currentState = FunNameState()
-            viewModel.currentState.Handle(viewModel)*/
+        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
+            viewModel.currentState = FunNameState()
+            viewModel.currentState.Handle(viewModel)
         }
-
     }
 }

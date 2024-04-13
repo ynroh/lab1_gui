@@ -7,9 +7,10 @@ public class Scanner {
     //private  var Lexemes: MutableList<Lexeme> = mutableListOf()
 
     fun analyzeCode(viewModel: ScannerViewModel){
+        var a = "\n"
+        println(a[0])
         val inputString = viewModel.currentContent
         println("AA " + inputString)
-        viewModel.currentContent = inputString
         viewModel.lexemes.clear()
         var bitOfCode = String()
         var i = 0
@@ -71,7 +72,7 @@ public class Scanner {
                 val firstChar = i;
 
                 when(inputString[i].toString()) {
-                    " " -> viewModel.lexemes.add(Lexeme(7, LexemeType.SPACE, bitOfCode, firstChar, i))
+                    " " -> viewModel.lexemes.add(Lexeme(7, LexemeType.SEPARATOR, bitOfCode, firstChar, i))
                     "(" -> viewModel.lexemes.add(Lexeme(8, LexemeType.OPEN_C_SCOPE, bitOfCode, firstChar, i))
                     ")" -> viewModel.lexemes.add(Lexeme(9, LexemeType.CLOSE_C_SCOPE, bitOfCode, firstChar, i))
                     "{" -> viewModel.lexemes.add(Lexeme(10, LexemeType.OPEN_F_SCOPE, bitOfCode, firstChar, i))
@@ -83,23 +84,9 @@ public class Scanner {
                 bitOfCode = String()
             }
 
-            else if(inputString[i] == '/'){
+            else if(inputString[i] == '\n' || inputString[i] == '\t'){
                 val firstChar = i
-
-                while ((i + 1) < inputString.length && ((inputString[i + 1].isLetter())))
-                {
-                    i++;
-                    bitOfCode += inputString[i];
-                }
-
-                if(bitOfCode == "\n"){
-                    viewModel.lexemes.add(Lexeme(13, LexemeType.SEPARATOR, bitOfCode, firstChar + 1, i + 1))
-                }
-                else {
-                    viewModel.lexemes.add(Lexeme(20, LexemeType.INVALID_LEXEME, bitOfCode, firstChar+1, i+1))
-
-                }
-                bitOfCode = String()
+                viewModel.lexemes.add(Lexeme(13, LexemeType.SEPARATOR, inputString[i].toString(), firstChar, i))
             }
             else {
                 val firstChar = i
@@ -112,6 +99,7 @@ public class Scanner {
             }
             i++
         }
+       skipSeparators(viewModel)
         printResult(viewModel)
     }
 
@@ -127,6 +115,15 @@ public class Scanner {
         else return false
     }
 
+    private fun skipSeparators(viewModel: ScannerViewModel){
+        var temp = mutableListOf<Lexeme>()
+        for(lexeme in viewModel.lexemes){
+            if(lexeme.getType() != LexemeType.SEPARATOR){
+                temp.add(lexeme)
+            }
+        }
+        viewModel.lexemes=temp.toMutableList()
+    }
     private fun printResult(viewModel: ScannerViewModel){
         var result: String = String()
         for (lexeme in viewModel.lexemes) {
