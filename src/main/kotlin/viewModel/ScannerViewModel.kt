@@ -25,6 +25,11 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
     var currentState: IState = DefinitionState()
     var checkedLexeme = 0
 
+    fun restart(){
+        parserErrors.clear()
+        currentState = DefinitionState()
+        checkedLexeme = 0
+    }
     fun skipIncorrectLexemes(currentIndex: Int, expectedLexemeIndex: Int){
 
             var index1 = currentIndex //номер лексемы которая сейчас (из списка текущих лексем)
@@ -55,8 +60,10 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
             }
 
             if (index1 >= lexemes.size || index2 >= expectedInput.size) {
+                checkedLexeme++
+                println("ждем ${checkedLexeme}")
                 parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}", currentIndex, lexemes.last().getEndIndex()))
-                println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${lexemes[currentIndex].getStartIndex()+lexemes[currentIndex].getValue().length}")
+                println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${skippedLexemes.last().getEndIndex()}")
             }
     }
 
