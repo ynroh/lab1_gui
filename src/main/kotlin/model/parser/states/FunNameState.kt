@@ -7,14 +7,14 @@ import src.main.kotlin.model.parser.intarfaces.IState
 import src.main.kotlin.viewModel.ScannerViewModel
 class FunNameState: IState {
     override fun Handle(viewModel: ScannerViewModel){
-        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.IDENTIFIER) {
+        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.checkedLexeme]) {
             viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 1)
         }
         else{
             viewModel.checkedLexeme ++
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.OPEN_C_SCOPE) {
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.checkedLexeme]) {
                 viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 2)
             }
             else{
