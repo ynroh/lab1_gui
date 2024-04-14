@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import src.main.kotlin.model.Scanner
+import src.main.kotlin.model.parser.Parser
 import src.main.kotlin.model.parser.states.DefinitionState
 import src.main.kotlin.viewModel.ScannerViewModel
 import java.awt.Toolkit
@@ -32,7 +33,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Toolbar(viewModel: ScannerViewModel, scanner: Scanner){
+fun Toolbar(viewModel: ScannerViewModel, scanner: Scanner, parser: Parser){
     var showDialog by remember { mutableStateOf(false) }
     var isCreateCommand  by remember { mutableStateOf(false) }
     var isOpenCommand  by remember { mutableStateOf(false) }
@@ -102,9 +103,8 @@ fun Toolbar(viewModel: ScannerViewModel, scanner: Scanner){
         }
         IconButton(onClick = {
             scanner.analyzeCode(viewModel)
-            if(viewModel.lexemes.size !=0){
-                viewModel.restart()
-                viewModel.currentState.Handle(viewModel)}}, modifier = Modifier.height(14.dp))
+            parser.parseCode(viewModel)
+           }, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Default.PlayArrow, "Play")
         }

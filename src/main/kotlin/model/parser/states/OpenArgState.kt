@@ -7,27 +7,32 @@ import java.util.LinkedList
 
 class OpenArgState:IState {
     override fun Handle(viewModel: ScannerViewModel){
-        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.checkedLexeme]) {
-            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 3)
+        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
+            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
         }
         else{
             viewModel.checkedLexeme ++
+            viewModel.expectedLexeme++
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.checkedLexeme]) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 4)
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
             }
             else{
                 viewModel.checkedLexeme ++
+                viewModel.expectedLexeme++
+
             }
         }
 
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.checkedLexeme]) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 5)
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
             }
             else{
                 viewModel.checkedLexeme ++
+                viewModel.expectedLexeme++
+
             }
         }
         /*// -------

@@ -6,11 +6,12 @@ import src.main.kotlin.viewModel.ScannerViewModel
 
 class CommaState : IState{
     override fun Handle(viewModel: ScannerViewModel) {
-        if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.checkedLexeme]) {
-            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 6)
+        if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
+            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
         }
         else {
             viewModel.checkedLexeme +=1
+            viewModel.expectedLexeme++
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
             viewModel.currentState = CloseArgState()

@@ -19,12 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import src.main.kotlin.model.Scanner
 import src.main.kotlin.viewModel.ScannerViewModel
 import src.main.kotlin.model.UndoRedoState
+import src.main.kotlin.model.parser.Parser
 import src.main.kotlin.view.*
 
 
 @Composable
 @Preview
-fun App(viewModel: ScannerViewModel, scanner: Scanner) {
+fun App(viewModel: ScannerViewModel, scanner: Scanner, parser: Parser) {
 
 
     Column() {
@@ -37,8 +38,8 @@ fun App(viewModel: ScannerViewModel, scanner: Scanner) {
             TextButton(
                 onClick = {
                     scanner.analyzeCode(viewModel)
-                    if(viewModel.lexemes.size !=0){
-                    viewModel.currentState.Handle(viewModel)}},
+                    parser.parseCode(viewModel)
+                },
                 modifier = Modifier.height(30.dp)
             ) {
                 Text(
@@ -50,7 +51,7 @@ fun App(viewModel: ScannerViewModel, scanner: Scanner) {
             infoItem()
         }
         Row() {
-            Toolbar(viewModel, scanner)
+            Toolbar(viewModel, scanner, parser)
         }
         Column() {
             Row(modifier = Modifier.weight(1f)) {
@@ -68,14 +69,14 @@ fun main() = application {
     val undoRedoState = UndoRedoState()
     val viewModel = ScannerViewModel(undoRedoState)
     val scanner = Scanner()
-
+    val parser = Parser()
 
     Window(onCloseRequest = {
         if(viewModel.currentContent!="" && !viewModel.isChangesSaved)
             SaveFileAs(viewModel)
         System.exit(0) },
     title= if(viewModel.isChangesSaved) "Компилятор" else "Компилятор*") {
-        App(viewModel,scanner)
+        App(viewModel,scanner, parser)
     }
 
 }

@@ -6,42 +6,52 @@ import src.main.kotlin.viewModel.ScannerViewModel
 
 class ReturnState :IState{
     override fun Handle(viewModel: ScannerViewModel) {
-        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.KEY_WORD_RETURN) {
-            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 14)
+        if(viewModel.lexemes[viewModel.checkedLexeme].getType() !=  viewModel.expectedInput[viewModel.expectedLexeme]) {
+            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
         }
         else{
             viewModel.checkedLexeme ++
+            viewModel.expectedLexeme++
+
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.IDENTIFIER) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 15)
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() !=  viewModel.expectedInput[viewModel.expectedLexeme]) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
             }
             else{
                 viewModel.checkedLexeme ++
+                viewModel.expectedLexeme++
+
             }
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.OPERATOR) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 16)
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
             }
             else{
                 viewModel.checkedLexeme ++
+                viewModel.expectedLexeme++
+
             }
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.IDENTIFIER) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 17)
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() !=  viewModel.expectedInput[viewModel.expectedLexeme]) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
             }
             else{
                 viewModel.checkedLexeme ++
+                viewModel.expectedLexeme++
+
             }
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.CLOSE_F_SCOPE) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 18)
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() !=  viewModel.expectedInput[viewModel.expectedLexeme]) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
             }
             else{
                 viewModel.checkedLexeme ++
+                viewModel.expectedLexeme++
+
             }
         }
     }

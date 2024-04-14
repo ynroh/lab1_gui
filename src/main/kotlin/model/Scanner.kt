@@ -100,7 +100,6 @@ public class Scanner {
             i++
         }
        skipSeparators(viewModel)
-        printResult(viewModel)
     }
 
     private fun isOperator(char: Char): Boolean{

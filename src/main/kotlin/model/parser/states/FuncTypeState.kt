@@ -6,26 +6,32 @@ import src.main.kotlin.viewModel.ScannerViewModel
 
 class FuncTypeState:IState {
     override fun Handle(viewModel: ScannerViewModel) {
-        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.COLON) {
-            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 11)
+        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
+            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
         }
         else{
             viewModel.checkedLexeme ++
+            viewModel.expectedLexeme++
+
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.KEY_WORD_TYPE) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 12)
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
             }
             else{
                 viewModel.checkedLexeme ++
+                viewModel.expectedLexeme++
+
             }
         }
         if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != LexemeType.OPEN_F_SCOPE) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, 13)
+            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
+                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
             }
             else{
                 viewModel.checkedLexeme ++
+                viewModel.expectedLexeme++
+
             }
         }
 

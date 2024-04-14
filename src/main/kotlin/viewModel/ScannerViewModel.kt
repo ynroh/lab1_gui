@@ -23,48 +23,60 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
     var lexemes = mutableListOf<Lexeme>()
     var parserErrors = mutableListOf<ParserError>()
     var currentState: IState = DefinitionState()
-    var checkedLexeme = 0
 
-    fun restart(){
-        parserErrors.clear()
-        currentState = DefinitionState()
-        checkedLexeme = 0
-    }
+    var checkedLexeme = 0
+    var expectedLexeme = 0
+
     fun skipIncorrectLexemes(currentIndex: Int, expectedLexemeIndex: Int){
 
-            var index1 = currentIndex //номер лексемы которая сейчас (из списка текущих лексем)
-            var index2 = expectedLexemeIndex//номер лексемы которая должна быть (из списка ожидаемых лексем)
-            var skippedLexemes = arrayListOf<Lexeme>()
-            checkedLexeme = expectedLexemeIndex
-            var flag = true
+        var index1 = currentIndex //номер лексемы которая сейчас (из списка текущих лексем)
+        var index2 = expectedLexemeIndex//номер лексемы которая должна быть (из списка ожидаемых лексем)
+        var skippedLexemes = arrayListOf<Lexeme>()
+        checkedLexeme = expectedLexemeIndex
+        var flag = true
 
-            while(index1 < lexemes.size && index2 < expectedInput.size){
-                if (lexemes[index1].getType() == expectedInput[index2]) {
-                    if(flag) checkedLexeme = index1 else checkedLexeme=index2+1
-                    println("след.проверяемая: ${checkedLexeme}" )
-                    for(i in skippedLexemes)
-                        println(i.getType())
-                    parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}",lexemes[currentIndex].getStartIndex(),skippedLexemes.last().getEndIndex()))
-                    println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${skippedLexemes.last().getEndIndex()}")
-                    break
-                }
-                else{
-                    skippedLexemes.add(lexemes[index1])
-                }
-                index1++
-                if (index1 >= lexemes.size) {
-                    index1 = currentIndex
-                    flag = false
-                    index2++
-                }
-            }
-
-            if (index1 >= lexemes.size || index2 >= expectedInput.size) {
-                checkedLexeme++
-                println("ждем ${checkedLexeme}")
-                parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}", currentIndex, lexemes.last().getEndIndex()))
+        while(index1 < lexemes.size && index2 < expectedInput.size){
+            if (lexemes[index1].getType() == expectedInput[index2]) {
+                checkedLexeme = skippedLexemes.size+1
+                expectedLexeme = index2+1
+                println("проверяем ${skippedLexemes.size+1}")
+                println("ожидаем ${expectedLexeme}")
+                parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}",lexemes[currentIndex].getStartIndex(),skippedLexemes.last().getEndIndex()))
                 println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${skippedLexemes.last().getEndIndex()}")
+                break
             }
+            else{
+                if(index2+1 < expectedInput.size) {
+                    if (lexemes[index1].getType() == expectedInput[index2 + 1]) {
+                        parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}",lexemes[currentIndex].getStartIndex(),if (skippedLexemes.size>0) skippedLexemes.last().getEndIndex() else lexemes[index1].getEndIndex()))
+                        println(
+                            "поиск закончен, ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${
+                                if (skippedLexemes.size>0) skippedLexemes.last().getEndIndex() else lexemes[index1].getEndIndex()
+                            }"
+                        )
+                        checkedLexeme = index1 + 1
+                        expectedLexeme = index2 + 2
+                        println("проверяем ${checkedLexeme}")
+                        println("ожидаем ${expectedLexeme}")
+                        break
+                    }
+                }
+                skippedLexemes.add(lexemes[index1])
+            }
+            index1++
+            if (index1 >= lexemes.size) {
+                index1 = currentIndex
+                flag = false
+                index2++
+            }
+        }
+
+        if (index1 >= lexemes.size || index2 >= expectedInput.size) {
+            checkedLexeme++
+            println("ждем ${checkedLexeme}")
+            parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}", lexemes[currentIndex].getStartIndex(), skippedLexemes.last().getEndIndex()))
+            println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${skippedLexemes.last().getEndIndex()}")
+        }
     }
 
 }
