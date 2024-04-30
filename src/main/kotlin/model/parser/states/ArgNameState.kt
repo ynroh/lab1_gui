@@ -6,32 +6,17 @@ import src.main.kotlin.model.parser.ParserError
 import src.main.kotlin.model.parser.intarfaces.State
 import src.main.kotlin.viewModel.ScannerViewModel
 
-class DefinitionState: State() {
-
-    /*override fun Handle(viewModel: ScannerViewModel){
-        if (viewModel.lexemes[0].getType() != viewModel.expectedInput[0]) {
-            viewModel.skipIncorrectLexemes(0, 0)
-        }
-        else {
-            viewModel.checkedLexeme +=1
-            viewModel.expectedLexeme++
-        }
-        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            viewModel.currentState = FunNameState()
-            viewModel.currentState.Handle(viewModel)
-        }
-    }*/
-
-    override fun Handle(viewModel: ScannerViewModel){
+class ArgNameState: State() {
+    override fun Handle(viewModel: ScannerViewModel) {
         var skippedLexemes = arrayListOf<Lexeme>()
         var startIndex = viewModel.currentLexemeIndex
-        if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.KEY_WORD_FUN) {
+        if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.IDENTIFIER) {
             skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
             for (i in startIndex until viewModel.lexemes.size) {
                 if (IsBoundaryLexeme(viewModel)) {
                     viewModel.parserErrors.add(
                         ParserError(
-                            "Ожидалось ключевое слово",
+                            "Ожидался идентификатор",
                             skippedLexemes[0].getStartIndex(),
                             skippedLexemes.last().getEndIndex()
                         )
@@ -47,11 +32,11 @@ class DefinitionState: State() {
             viewModel.currentLexemeIndex++
         }
 
-        viewModel.expectedLexeme = LexemeType.IDENTIFIER
+        viewModel.expectedLexeme = LexemeType.COLON
 
         if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-            viewModel.currentState = FunNameState()
-            viewModel.currentState.Handle(viewModel)
+            viewModel.currentState = ArgTypeState()
+            //viewModel.currentState.Handle(viewModel)
         }
     }
 }

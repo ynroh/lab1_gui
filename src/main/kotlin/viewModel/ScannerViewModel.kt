@@ -6,14 +6,14 @@ import src.main.kotlin.model.Lexeme
 import src.main.kotlin.model.LexemeType
 import src.main.kotlin.model.UndoRedoState
 import src.main.kotlin.model.parser.ParserError
-import src.main.kotlin.model.parser.intarfaces.IState
+import src.main.kotlin.model.parser.intarfaces.State
 
 
 class ScannerViewModel(undoRedoState: UndoRedoState) {
-    val expectedInput = listOf(LexemeType.KEY_WORD_FUN, LexemeType.IDENTIFIER, LexemeType.OPEN_C_SCOPE, LexemeType.IDENTIFIER, LexemeType.COLON,
+   /* val expectedInput = listOf(LexemeType.KEY_WORD_FUN, LexemeType.IDENTIFIER, LexemeType.OPEN_C_SCOPE, LexemeType.IDENTIFIER, LexemeType.COLON,
         LexemeType.KEY_WORD_TYPE, LexemeType.COMMA, LexemeType.IDENTIFIER, LexemeType.COLON, LexemeType.KEY_WORD_TYPE, LexemeType.CLOSE_C_SCOPE, LexemeType.COLON,
         LexemeType.KEY_WORD_TYPE, LexemeType.OPEN_F_SCOPE, LexemeType.KEY_WORD_RETURN, LexemeType.IDENTIFIER, LexemeType.OPERATOR,
-        LexemeType.IDENTIFIER, LexemeType.CLOSE_F_SCOPE)
+        LexemeType.IDENTIFIER, LexemeType.CLOSE_F_SCOPE)*/
 
     var currentFilePath by mutableStateOf("")
     var currentContent by mutableStateOf("")
@@ -22,9 +22,13 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
     var scanResultText by mutableStateOf("")
     var lexemes = mutableListOf<Lexeme>()
     var parserErrors = mutableListOf<ParserError>()
-    var currentState: IState = DefinitionState()
+    var currentState: State = DefinitionState()
 
-    var checkedLexeme = 0
+
+    var currentLexemeIndex: Int = 0
+    var expectedLexeme = LexemeType.KEY_WORD_FUN
+
+    /*var checkedLexeme = 0
     var expectedLexeme = 0
 
     fun skipIncorrectLexemes(currentIndex: Int, expectedLexemeIndex: Int){
@@ -77,6 +81,6 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
             parserErrors.add(ParserError(value = "Ожидалось ${expectedInput[expectedLexemeIndex]}", lexemes[currentIndex].getStartIndex(), skippedLexemes.last().getEndIndex()))
             println("Ожидалось ${expectedInput[expectedLexemeIndex]} c ${lexemes[currentIndex].getStartIndex()} по ${skippedLexemes.last().getEndIndex()}")
         }
-    }
+    }*/
 
 }

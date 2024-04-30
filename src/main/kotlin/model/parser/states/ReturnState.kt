@@ -1,4 +1,5 @@
 package src.main.kotlin.model.parser.states
+/*
 
 import src.main.kotlin.model.LexemeType
 import src.main.kotlin.model.parser.intarfaces.IState
@@ -55,4 +56,4 @@ class ReturnState :IState{
             }
         }
     }
-}
+}*/

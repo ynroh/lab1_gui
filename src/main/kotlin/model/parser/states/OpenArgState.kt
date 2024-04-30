@@ -1,12 +1,16 @@
 package src.main.kotlin.model.parser.states
 
+//import model.parser.states.ArgNameState
+import src.main.kotlin.model.parser.states.ArgNameState
+import src.main.kotlin.model.Lexeme
 import src.main.kotlin.model.LexemeType
-import src.main.kotlin.model.parser.intarfaces.IState
+import src.main.kotlin.model.parser.ParserError
+import src.main.kotlin.model.parser.intarfaces.State
 import src.main.kotlin.viewModel.ScannerViewModel
 import java.util.LinkedList
 
-class OpenArgState:IState {
-    override fun Handle(viewModel: ScannerViewModel){
+class OpenArgState:State(){
+   /* override fun Handle(viewModel: ScannerViewModel){
         if(viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
             viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
         }
@@ -35,24 +39,39 @@ class OpenArgState:IState {
 
             }
         }
-        /*// -------
+    }*/
 
-        var list = listOf(LexemeType.IDENTIFIER, LexemeType.COLON, LexemeType.KEY_WORD_TYPE)
-        var beginExprectedLexemeIndex = 3;
-        var expexctedLexemeIndex = beginExprectedLexemeIndex;
-        while(viewModel.checkedLexeme<viewModel.lexemes.size && expexctedLexemeIndex < list.size){
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != list[expexctedLexemeIndex-beginExprectedLexemeIndex]) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, expexctedLexemeIndex)
+    override fun Handle(viewModel: ScannerViewModel){
+        var skippedLexemes = arrayListOf<Lexeme>()
+        var startIndex = viewModel.currentLexemeIndex
+        if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPEN_C_SCOPE) {
+            skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
+            for (i in startIndex until viewModel.lexemes.size) {
+                if (IsBoundaryLexeme(viewModel)) {
+                    viewModel.parserErrors.add(
+                        ParserError(
+                            "Ожидалось '('",
+                            skippedLexemes[0].getStartIndex(),
+                            skippedLexemes.last().getEndIndex()
+                        )
+                    )
+                    break
+                } else {
+                    skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
+                    viewModel.currentLexemeIndex++
+                }
             }
-            else{
-                viewModel.checkedLexeme ++
-            }
-            expexctedLexemeIndex++;
         }
-        // -------*/
-        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            viewModel.currentState = CommaState()
+        else{
+            viewModel.currentLexemeIndex++
+        }
+
+        viewModel.expectedLexeme = LexemeType.IDENTIFIER
+
+        if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
+            viewModel.currentState = ArgNameState()
             viewModel.currentState.Handle(viewModel)
         }
     }
+
 }
