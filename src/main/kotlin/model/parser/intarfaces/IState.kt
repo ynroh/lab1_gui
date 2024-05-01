@@ -15,25 +15,54 @@ abstract class State {
             LexemeType.IDENTIFIER ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_C_SCOPE
                     || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COLON
-                        || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_F_SCOPE
+                        || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.CLOSE_F_SCOPE
                             || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPERATOR)
                     return true
             LexemeType.OPEN_C_SCOPE ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER
                     || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COLON)
                     return true
-            LexemeType.CLOSE_C_SCOPE -> TODO()
-            LexemeType.COLON -> TODO()
-            LexemeType.KEY_WORD_TYPE -> TODO()
-            LexemeType.COMMA -> TODO()
-            LexemeType.OPEN_F_SCOPE -> TODO()
-            LexemeType.CLOSE_F_SCOPE -> TODO()
-            LexemeType.KEY_WORD_RETURN -> TODO()
-            LexemeType.OPERATOR -> TODO()
-            LexemeType.INVALID_LEXEME -> TODO()
-            LexemeType.SEPARATOR -> TODO()
+            LexemeType.CLOSE_C_SCOPE ->
+                if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COLON
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_TYPE)
+                    return true
+            LexemeType.COLON ->
+                if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_TYPE
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COMMA
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_F_SCOPE)
+                    return true
+            LexemeType.KEY_WORD_TYPE ->
+                if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.CLOSE_C_SCOPE
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COMMA
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_F_SCOPE)
+                    return true
+            LexemeType.COMMA ->
+                if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COLON)
+                    return true
+            LexemeType.OPEN_F_SCOPE ->
+                if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_RETURN)
+                    return true
+            LexemeType.KEY_WORD_RETURN ->
+                if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPERATOR)
+                    return true
+            LexemeType.OPERATOR ->
+                if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER
+                    || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.CLOSE_F_SCOPE)
+                    return true
+            else -> {return false}
         }
         return false
     }
 
+    final fun whiskers(skippedLexeme: ArrayList<Lexeme>): String{
+        var result: String = "Ошибка: "
+        for(lexeme in skippedLexeme){
+            result += lexeme.getValue()
+        }
+        result += ". "
+        return result
+    }
 }

@@ -16,15 +16,26 @@ class ArgNameState: State() {
                 if (IsBoundaryLexeme(viewModel)) {
                     viewModel.parserErrors.add(
                         ParserError(
-                            "Ожидался идентификатор",
+                            whiskers(skippedLexemes)+"Ожидался идентификатор",
                             skippedLexemes[0].getStartIndex(),
                             skippedLexemes.last().getEndIndex()
                         )
                     )
                     break
                 } else {
-                    skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
                     viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER) {
+                            viewModel.parserErrors.add(
+                                ParserError(
+                                    whiskers(skippedLexemes) + "Ожидался идентификатор",
+                                    skippedLexemes[0].getStartIndex(),
+                                    skippedLexemes.last().getEndIndex()
+                                )
+                            )
+                            break
+                        }
+                    }
                 }
             }
         }
@@ -35,8 +46,8 @@ class ArgNameState: State() {
         viewModel.expectedLexeme = LexemeType.COLON
 
         if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-            viewModel.currentState = ArgTypeState()
-            //viewModel.currentState.Handle(viewModel)
+            viewModel.currentState = ColonState()
+            viewModel.currentState.Handle(viewModel)
         }
     }
 }

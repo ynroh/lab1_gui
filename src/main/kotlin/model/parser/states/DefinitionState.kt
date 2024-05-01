@@ -31,15 +31,26 @@ class DefinitionState: State() {
                 if (IsBoundaryLexeme(viewModel)) {
                     viewModel.parserErrors.add(
                         ParserError(
-                            "Ожидалось ключевое слово",
+                            whiskers(skippedLexemes)+"Ожидалось ключевое слово fun",
                             skippedLexemes[0].getStartIndex(),
                             skippedLexemes.last().getEndIndex()
                         )
                     )
                     break
                 } else {
-                    skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
                     viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_FUN) {
+                            viewModel.parserErrors.add(
+                                ParserError(
+                                    whiskers(skippedLexemes) + "Ожидалось ключевое слово fun",
+                                    skippedLexemes[0].getStartIndex(),
+                                    skippedLexemes.last().getEndIndex()
+                                )
+                            )
+                            break
+                        }
+                    }
                 }
             }
         }

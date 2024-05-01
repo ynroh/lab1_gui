@@ -7,6 +7,7 @@ import src.main.kotlin.model.LexemeType
 import src.main.kotlin.model.UndoRedoState
 import src.main.kotlin.model.parser.ParserError
 import src.main.kotlin.model.parser.intarfaces.State
+import java.awt.Color
 
 
 class ScannerViewModel(undoRedoState: UndoRedoState) {
