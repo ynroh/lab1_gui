@@ -7,7 +7,8 @@ sealed class ErrorType {
 class ParserError(
 var value: String,
 var startIndex: Int,
-var endIndex: Int
+var endIndex: Int,
+var expected: String
 ) {
     val position: String
     get() = "с $startIndex по $endIndex символы"

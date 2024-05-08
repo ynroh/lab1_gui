@@ -19,9 +19,11 @@ class FunTypeState: State() {
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидался тип",
                             skippedLexemes[0].getStartIndex(),
-                            skippedLexemes.last().getEndIndex()
+                            skippedLexemes.last().getEndIndex(),
+                            "Int"
                         )
                     )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
                     viewModel.currentLexemeIndex++
@@ -31,9 +33,11 @@ class FunTypeState: State() {
                                 ParserError(
                                     whiskers(skippedLexemes) + "Ожидался тип",
                                     skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex()
+                                    skippedLexemes.last().getEndIndex(),
+                                    "Int"
                                 )
                             )
+                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
                     }

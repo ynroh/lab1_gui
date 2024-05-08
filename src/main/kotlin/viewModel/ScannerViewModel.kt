@@ -25,6 +25,7 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
     var parserErrors = mutableListOf<ParserError>()
     var currentState: State = DefinitionState()
 
+    var errorLexemes = mutableListOf<Lexeme>()
 
     var currentLexemeIndex: Int = 0
     var expectedLexeme = LexemeType.KEY_WORD_FUN

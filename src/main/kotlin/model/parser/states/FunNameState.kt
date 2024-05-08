@@ -43,9 +43,11 @@ class FunNameState: State() {
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидался идентификатор",
                             skippedLexemes[0].getStartIndex(),
-                            skippedLexemes.last().getEndIndex()
+                            skippedLexemes.last().getEndIndex(),
+                            "A"
                         )
                     )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
                     viewModel.currentLexemeIndex++
@@ -55,9 +57,11 @@ class FunNameState: State() {
                                 ParserError(
                                     whiskers(skippedLexemes) + "Ожидался идентификатор",
                                     skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex()
+                                    skippedLexemes.last().getEndIndex(),
+                                    "A"
                                 )
                             )
+                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
                     }

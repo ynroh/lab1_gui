@@ -11,7 +11,7 @@ import src.main.kotlin.viewModel.ScannerViewModel
 
 class ArgSeparatorState: State() {
     override fun Handle(viewModel: ScannerViewModel) {
-        var skippedLexemes = arrayListOf<Lexeme>()
+        /*var skippedLexemes = arrayListOf<Lexeme>()
         var startIndex = viewModel.currentLexemeIndex
         if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.CLOSE_C_SCOPE
             && viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.COMMA) {
@@ -22,9 +22,11 @@ class ArgSeparatorState: State() {
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидалось ')'",
                             skippedLexemes[0].getStartIndex(),
-                            skippedLexemes.last().getEndIndex()
+                            skippedLexemes.last().getEndIndex(),
+                            ")"
                         )
                     )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
                     viewModel.currentLexemeIndex++
@@ -36,9 +38,11 @@ class ArgSeparatorState: State() {
                                 ParserError(
                                     whiskers(skippedLexemes) + "Ожидалось ')'",
                                     skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex()
+                                    skippedLexemes.last().getEndIndex(),
+                                    ")"
                                 )
                             )
+                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
                     }
@@ -60,6 +64,6 @@ class ArgSeparatorState: State() {
                 viewModel.currentState = ArgColonState()
             }
             viewModel.currentState.Handle(viewModel)
-        }
+        }*/
     }
 }

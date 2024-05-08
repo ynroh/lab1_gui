@@ -8,7 +8,7 @@ import src.main.kotlin.viewModel.ScannerViewModel
 
 class ColonState:  State(){
     override fun Handle(viewModel: ScannerViewModel) {
-        var skippedLexemes = arrayListOf<Lexeme>()
+       /* var skippedLexemes = arrayListOf<Lexeme>()
         var startIndex = viewModel.currentLexemeIndex
         if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.COLON) {
             skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
@@ -18,9 +18,11 @@ class ColonState:  State(){
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидалось ':'",
                             skippedLexemes[0].getStartIndex(),
-                            skippedLexemes.last().getEndIndex()
+                            skippedLexemes.last().getEndIndex(),
+                            ":"
                         )
                     )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
                     viewModel.currentLexemeIndex++
@@ -30,9 +32,11 @@ class ColonState:  State(){
                                 ParserError(
                                     whiskers(skippedLexemes) + "Ожидалось ':'",
                                     skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex()
+                                    skippedLexemes.last().getEndIndex(),
+                                    ":"
                                 )
                             )
+                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
                     }
@@ -48,6 +52,6 @@ class ColonState:  State(){
         if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
             viewModel.currentState = ArgTypeState()
             viewModel.currentState.Handle(viewModel)
-        }
+        }*/
     }
 }

@@ -104,6 +104,7 @@ fun Toolbar(viewModel: ScannerViewModel, scanner: Scanner, parser: Parser){
         IconButton(onClick = {
             scanner.analyzeCode(viewModel)
             parser.parseCode(viewModel)
+
            }, modifier = Modifier.height(14.dp))
         {
             Icon(Icons.Default.PlayArrow, "Play")

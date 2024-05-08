@@ -33,9 +33,11 @@ class DefinitionState: State() {
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидалось ключевое слово fun",
                             skippedLexemes[0].getStartIndex(),
-                            skippedLexemes.last().getEndIndex()
+                            skippedLexemes.last().getEndIndex(),
+                            "fun"
                         )
                     )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
                     viewModel.currentLexemeIndex++
@@ -45,9 +47,11 @@ class DefinitionState: State() {
                                 ParserError(
                                     whiskers(skippedLexemes) + "Ожидалось ключевое слово fun",
                                     skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex()
+                                    skippedLexemes.last().getEndIndex(),
+                                    "fun"
                                 )
                             )
+                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
                     }

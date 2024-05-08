@@ -9,7 +9,7 @@ import srs.main.kotlin.model.parser.states.ArgSeparatorState
 
 class ArgTypeState: State() {
     override fun Handle(viewModel: ScannerViewModel) {
-        var skippedLexemes = arrayListOf<Lexeme>()
+        /*var skippedLexemes = arrayListOf<Lexeme>()
         var startIndex = viewModel.currentLexemeIndex
         if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.KEY_WORD_TYPE) {
             skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
@@ -19,9 +19,11 @@ class ArgTypeState: State() {
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидался тип",
                             skippedLexemes[0].getStartIndex(),
-                            skippedLexemes.last().getEndIndex()
+                            skippedLexemes.last().getEndIndex(),
+                            "Int"
                         )
                     )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
                     viewModel.currentLexemeIndex++
@@ -31,9 +33,11 @@ class ArgTypeState: State() {
                                 ParserError(
                                     whiskers(skippedLexemes) + "Ожидался тип",
                                     skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex()
+                                    skippedLexemes.last().getEndIndex(),
+                                    "Int"
                                 )
                             )
+                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
                     }
@@ -49,6 +53,6 @@ class ArgTypeState: State() {
         if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
             viewModel.currentState = ArgSeparatorState()
             viewModel.currentState.Handle(viewModel)
-        }
+        }*/
     }
 }

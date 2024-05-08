@@ -52,9 +52,11 @@ class OpenArgState:State(){
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидалось '('",
                             skippedLexemes[0].getStartIndex(),
-                            skippedLexemes.last().getEndIndex()
+                            skippedLexemes.last().getEndIndex(),
+                            "("
                         )
                     )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
                     viewModel.currentLexemeIndex++
@@ -64,9 +66,11 @@ class OpenArgState:State(){
                                 ParserError(
                                     whiskers(skippedLexemes) + "Ожидалось '('",
                                     skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex()
+                                    skippedLexemes.last().getEndIndex(),
+                                    "("
                                 )
                             )
+                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
                     }

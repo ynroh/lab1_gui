@@ -19,9 +19,11 @@ class ReturnState :State(){
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидалось ключевое слово return",
                             skippedLexemes[0].getStartIndex(),
-                            skippedLexemes.last().getEndIndex()
+                            skippedLexemes.last().getEndIndex(),
+                            "return"
                         )
                     )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
                     viewModel.currentLexemeIndex++
@@ -31,9 +33,11 @@ class ReturnState :State(){
                                 ParserError(
                                     whiskers(skippedLexemes) + "Ожидалось ключевое слово return",
                                     skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex()
+                                    skippedLexemes.last().getEndIndex(),
+                                    "return"
                                 )
                             )
+                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
                     }

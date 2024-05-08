@@ -16,6 +16,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import src.main.kotlin.model.ErrorNeutralizer
 import src.main.kotlin.model.Scanner
 import src.main.kotlin.viewModel.ScannerViewModel
 import src.main.kotlin.model.UndoRedoState
@@ -25,7 +26,7 @@ import src.main.kotlin.view.*
 
 @Composable
 @Preview
-fun App(viewModel: ScannerViewModel, scanner: Scanner, parser: Parser) {
+fun App(viewModel: ScannerViewModel, scanner: Scanner, parser: Parser, fixer: ErrorNeutralizer) {
 
 
     Column() {
@@ -58,7 +59,7 @@ fun App(viewModel: ScannerViewModel, scanner: Scanner, parser: Parser) {
                 EditingTextField(viewModel)
             }
             Row(modifier = Modifier.weight(1f)) {
-                ResultField(viewModel)
+                ResultField(viewModel, fixer)
             }
         }
     }
@@ -70,13 +71,14 @@ fun main() = application {
     val viewModel = ScannerViewModel(undoRedoState)
     val scanner = Scanner()
     val parser = Parser()
+    val fixer = ErrorNeutralizer()
 
     Window(onCloseRequest = {
         if(viewModel.currentContent!="" && !viewModel.isChangesSaved)
             SaveFileAs(viewModel)
         System.exit(0) },
     title= if(viewModel.isChangesSaved) "Компилятор" else "Компилятор*") {
-        App(viewModel,scanner, parser)
+        App(viewModel,scanner, parser, fixer)
     }
 
 }

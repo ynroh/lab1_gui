@@ -16,9 +16,11 @@ class VarSeparatorState: State() {
                     ParserError(
                         "Ошибка: ${viewModel.lexemes[viewModel.currentLexemeIndex].getValue()}. " + "Ожидалось '}'",
                         viewModel.lexemes[viewModel.currentLexemeIndex].getStartIndex(),
-                        viewModel.lexemes[viewModel.currentLexemeIndex].getEndIndex()
+                        viewModel.lexemes[viewModel.currentLexemeIndex].getEndIndex(),
+                        "}"
                     )
                 )
+                viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
             }
         }
         else {
@@ -32,9 +34,11 @@ class VarSeparatorState: State() {
                             ParserError(
                                 whiskers(skippedLexemes) + "Ожидалось '}'",
                                 skippedLexemes[0].getStartIndex(),
-                                skippedLexemes.last().getEndIndex()
+                                skippedLexemes.last().getEndIndex(),
+                                "}"
                             )
                         )
+                        viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                         break
                     } else {
                         viewModel.currentLexemeIndex++
@@ -46,9 +50,11 @@ class VarSeparatorState: State() {
                                     ParserError(
                                         whiskers(skippedLexemes) + "Ожидалось '}'",
                                         skippedLexemes[0].getStartIndex(),
-                                        skippedLexemes.last().getEndIndex()
+                                        skippedLexemes.last().getEndIndex(),
+                                        "}"
                                     )
                                 )
+                                viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                                 break
                             }
                         }
@@ -76,9 +82,11 @@ class VarSeparatorState: State() {
                                 ParserError(
                                 "Неожиданный ввод: " + res,
                                 viewModel.lexemes[startIndex+1].getStartIndex(),
-                                viewModel.lexemes.last().getEndIndex()
+                                viewModel.lexemes.last().getEndIndex(),
+                                    "}"
                             )
                         )
+                        viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     }
                 }
             }
