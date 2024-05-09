@@ -18,7 +18,8 @@ class VarSeparatorState: State() {
                         viewModel.lexemes[viewModel.currentLexemeIndex].getStartIndex(),
                         viewModel.lexemes[viewModel.currentLexemeIndex].getEndIndex(),
                         "}",
-                        viewModel.lexemes[startIndex+1]
+                        nextLexeme = if(startIndex+1 < viewModel.lexemes.size) { viewModel.lexemes[startIndex + 1] } else{viewModel.lexemes[startIndex ]}
+
                     )
                 )
                 viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
@@ -37,13 +38,27 @@ class VarSeparatorState: State() {
                                 skippedLexemes[0].getStartIndex(),
                                 skippedLexemes.last().getEndIndex(),
                                 "}",
-                                viewModel.lexemes[startIndex+1]
+                                nextLexeme = if(startIndex+1 < viewModel.lexemes.size) { viewModel.lexemes[startIndex + 1] } else{viewModel.lexemes[startIndex ]}
+
                             )
                         )
                         viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                         break
                     } else {
+                        viewModel.parserErrors.add(
+                            ParserError(
+                                whiskers(skippedLexemes) + "Ожидалось '}'",
+                                skippedLexemes[0].getStartIndex(),
+                                skippedLexemes.last().getEndIndex(),
+                                "}",
+                                nextLexeme = if(startIndex+1 < viewModel.lexemes.size) { viewModel.lexemes[startIndex + 1] } else{viewModel.lexemes[startIndex ]}
+
+                            )
+                        )
                         viewModel.currentLexemeIndex++
+                        viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
+                        break
+                       /* viewModel.currentLexemeIndex++
                         if (viewModel.currentLexemeIndex < viewModel.lexemes.size) {
                             if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.CLOSE_F_SCOPE
                                 && viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPERATOR
@@ -60,7 +75,7 @@ class VarSeparatorState: State() {
                                 viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                                 break
                             }
-                        }
+                        }*/
                     }
                 }
             } else {
@@ -87,8 +102,9 @@ class VarSeparatorState: State() {
                                 viewModel.lexemes[startIndex+1].getStartIndex(),
                                 viewModel.lexemes.last().getEndIndex(),
                                     "}",
-                                    viewModel.lexemes[startIndex+1]
-                            )
+                                    nextLexeme = if(startIndex+1 < viewModel.lexemes.size) { viewModel.lexemes[startIndex + 1] } else{viewModel.lexemes[startIndex ]}
+
+                                )
                         )
                         viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     }

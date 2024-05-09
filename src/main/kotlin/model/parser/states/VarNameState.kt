@@ -19,14 +19,28 @@ class VarNameState: State() {
                             whiskers(skippedLexemes)+"Ожидался идентификатор",
                             skippedLexemes[0].getStartIndex(),
                             skippedLexemes.last().getEndIndex(),
-                            "Int",
-                            viewModel.lexemes[startIndex+1]
+                            "A",
+                            nextLexeme = if(startIndex+1 < viewModel.lexemes.size) { viewModel.lexemes[startIndex + 1] } else{viewModel.lexemes[startIndex ]}
                         )
                     )
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
+
+                    viewModel.parserErrors.add(
+                        ParserError(
+                            whiskers(skippedLexemes) + "Ожидался идентификатор",
+                            skippedLexemes[0].getStartIndex(),
+                            skippedLexemes.last().getEndIndex(),
+                            "Int",
+                            nextLexeme = if(startIndex+1 < viewModel.lexemes.size) { viewModel.lexemes[startIndex + 1] } else{viewModel.lexemes[startIndex ]}
+
+                        )
+                    )
                     viewModel.currentLexemeIndex++
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
+                    break
+                    /*viewModel.currentLexemeIndex++
                     if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
                         if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER) {
                             viewModel.parserErrors.add(
@@ -41,7 +55,7 @@ class VarNameState: State() {
                             viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
-                    }
+                    }*/
                 }
             }
         }

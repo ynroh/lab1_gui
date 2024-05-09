@@ -12,7 +12,8 @@ class ErrorNeutralizer {
             for(i in 0 until viewModel.parserErrors.size){
                 if(index == viewModel.parserErrors[i].startIndex){
                     //val value = if(viewModel.currentContent[viewModel.parserErrors[i].startIndex] == ' ') {viewModel.parserErrors[i].expected}  else {viewModel.parserErrors[i].expected + " "}
-                    if(viewModel.errorLexemes[i].getType() != LexemeType.INVALID_LEXEME ||IsBoundaryLexeme(viewModel.parserErrors[i]) ) {
+                    if(viewModel.errorLexemes[i].getType() != LexemeType.INVALID_LEXEME
+                        && IsBoundaryLexeme(viewModel.parserErrors[i]) ) {
                         fixedSymbol = viewModel.parserErrors[i].expected + " " + viewModel.errorLexemes[i].getValue()
                     }
                     else{

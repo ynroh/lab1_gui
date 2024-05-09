@@ -60,7 +60,20 @@ class OpenArgState:State(){
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
+                    viewModel.parserErrors.add(
+                        ParserError(
+                            whiskers(skippedLexemes) + "Ожидалось '('",
+                            skippedLexemes[0].getStartIndex(),
+                            skippedLexemes.last().getEndIndex(),
+                            "(",
+                            viewModel.lexemes[startIndex+1]
+                        )
+                    )
                     viewModel.currentLexemeIndex++
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
+                    break
+
+                    /*viewModel.currentLexemeIndex++
                     if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
                         if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_C_SCOPE) {
                             viewModel.parserErrors.add(
@@ -75,7 +88,7 @@ class OpenArgState:State(){
                             viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
-                    }
+                    }*/
                 }
             }
         }

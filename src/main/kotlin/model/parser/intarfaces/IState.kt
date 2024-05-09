@@ -12,12 +12,12 @@ abstract class State {
         for(i in 1 until bound) {
             if(viewModel.currentLexemeIndex+i < viewModel.lexemes.size) {
                 if(viewModel.lexemes[viewModel.currentLexemeIndex+i].getType() == viewModel.expectedLexeme) {
-                    viewModel.currentLexemeIndex += i + 1
-
+                    if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPEN_C_SCOPE) {
+                        viewModel.currentLexemeIndex += i + 1
+                    }
                     return true
                 }
             }
-
         }
 
         /*when(viewModel.expectedLexeme){
@@ -83,8 +83,10 @@ abstract class State {
         when(viewModel.expectedLexeme){
             LexemeType.KEY_WORD_FUN ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType()== LexemeType.IDENTIFIER) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.IDENTIFIER) {
+                            viewModel.currentLexemeIndex++
+                        }
                     }
                     return true
                 }
@@ -93,32 +95,41 @@ abstract class State {
                     || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COLON
                     || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.CLOSE_F_SCOPE
                     || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPERATOR){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType() == LexemeType.OPEN_C_SCOPE
-                        || viewModel.lexemes[viewModel.currentLexemeIndex+1].getType() == LexemeType.COLON
-                        || viewModel.lexemes[viewModel.currentLexemeIndex+1].getType() == LexemeType.CLOSE_F_SCOPE
-                        || viewModel.lexemes[viewModel.currentLexemeIndex+1].getType() == LexemeType.OPERATOR) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.OPEN_C_SCOPE
+                            || viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.COLON
+                            || viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.CLOSE_F_SCOPE
+                            || viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.OPERATOR
+                        ) {
+                            viewModel.currentLexemeIndex++
+                        }
                     }
                     return true
                 }
             LexemeType.OPEN_C_SCOPE ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType()== LexemeType.IDENTIFIER) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.IDENTIFIER) {
+                            viewModel.currentLexemeIndex++
+                        }
                     }
                     return true
                 }
             LexemeType.CLOSE_C_SCOPE ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COLON){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType()== LexemeType.COLON) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.COLON) {
+                            viewModel.currentLexemeIndex++
+                        }
                     }
                     return true
                 }
             LexemeType.COLON ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_TYPE){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType()== LexemeType.KEY_WORD_TYPE) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.KEY_WORD_TYPE) {
+                            viewModel.currentLexemeIndex++
+                        }
                     }
                     return true
                 }
@@ -126,24 +137,31 @@ abstract class State {
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.CLOSE_C_SCOPE
                     || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.COMMA
                     || viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_F_SCOPE){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType() == LexemeType.CLOSE_C_SCOPE
-                        || viewModel.lexemes[viewModel.currentLexemeIndex+1].getType() == LexemeType.COMMA
-                        || viewModel.lexemes[viewModel.currentLexemeIndex+1].getType() == LexemeType.OPEN_F_SCOPE) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.CLOSE_C_SCOPE
+                            || viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.COMMA
+                            || viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.OPEN_F_SCOPE
+                        ) {
+                            viewModel.currentLexemeIndex++
+                        }
+                        return true
                     }
-                    return true
                 }
             LexemeType.COMMA ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType()== LexemeType.IDENTIFIER) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.IDENTIFIER) {
+                            viewModel.currentLexemeIndex++
+                        }
+                        return true
                     }
-                    return true
                 }
             LexemeType.OPEN_F_SCOPE ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_RETURN){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType()== LexemeType.KEY_WORD_RETURN) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.KEY_WORD_RETURN) {
+                            viewModel.currentLexemeIndex++
+                        }
                     }
                     return true
                 }
@@ -156,8 +174,10 @@ abstract class State {
                 }
             LexemeType.OPERATOR ->
                 if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER){
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+1].getType()== LexemeType.IDENTIFIER) {
-                        viewModel.currentLexemeIndex++
+                    if(viewModel.currentLexemeIndex+1<viewModel.lexemes.size) {
+                        if (viewModel.lexemes[viewModel.currentLexemeIndex + 1].getType() == LexemeType.IDENTIFIER) {
+                            viewModel.currentLexemeIndex++
+                        }
                     }
                     return true
                 }

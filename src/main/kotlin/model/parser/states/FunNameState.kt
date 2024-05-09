@@ -51,7 +51,7 @@ class FunNameState: State() {
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
-                    viewModel.currentLexemeIndex++
+                    /*viewModel.currentLexemeIndex++
                     if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
                         if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER) {
                             viewModel.parserErrors.add(
@@ -66,7 +66,7 @@ class FunNameState: State() {
                             viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
-                    }
+                    }*/
                 }
             }
         }

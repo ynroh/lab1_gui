@@ -27,7 +27,7 @@ class DefinitionState: State() {
         var startIndex = viewModel.currentLexemeIndex
         if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.KEY_WORD_FUN) {
             skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
-            for (i in startIndex until viewModel.lexemes.size) {
+            for (i in startIndex until startIndex+2) {
                 if (IsBoundaryLexeme(viewModel) || isNextLexeme(viewModel)) {
                     viewModel.parserErrors.add(
                         ParserError(
@@ -41,7 +41,19 @@ class DefinitionState: State() {
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
+                    viewModel.parserErrors.add(
+                        ParserError(
+                            whiskers(skippedLexemes) + "Ожидалось ключевое слово fun",
+                            skippedLexemes[0].getStartIndex(),
+                            skippedLexemes.last().getEndIndex(),
+                            "fun",
+                            viewModel.lexemes[startIndex+1]
+                        )
+                    )
                     viewModel.currentLexemeIndex++
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
+                    break
+                    /*viewModel.currentLexemeIndex++
                     if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
                         if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_FUN) {
                             viewModel.parserErrors.add(
@@ -56,7 +68,7 @@ class DefinitionState: State() {
                             viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
-                    }
+                    }*/
                 }
             }
         }

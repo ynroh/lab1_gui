@@ -27,7 +27,19 @@ class ArgTypeState: State() {
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
+                    viewModel.parserErrors.add(
+                        ParserError(
+                            whiskers(skippedLexemes) + "Ожидался тип",
+                            skippedLexemes[0].getStartIndex(),
+                            skippedLexemes.last().getEndIndex(),
+                            "Int",
+                            viewModel.lexemes[startIndex+1]
+                        )
+                    )
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     viewModel.currentLexemeIndex++
+                    break
+                    /*viewModel.currentLexemeIndex++
                     if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
                         if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_TYPE) {
                             viewModel.parserErrors.add(
@@ -42,7 +54,7 @@ class ArgTypeState: State() {
                             viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                             break
                         }
-                    }
+                    }*/
                 }
             }
         }
