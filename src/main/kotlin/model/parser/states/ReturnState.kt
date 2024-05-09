@@ -14,13 +14,14 @@ class ReturnState :State(){
         if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.KEY_WORD_RETURN) {
             skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
             for (i in startIndex until viewModel.lexemes.size) {
-                if (IsBoundaryLexeme(viewModel)) {
+                if (IsBoundaryLexeme(viewModel) || isNextLexeme(viewModel)) {
                     viewModel.parserErrors.add(
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидалось ключевое слово return",
                             skippedLexemes[0].getStartIndex(),
                             skippedLexemes.last().getEndIndex(),
-                            "return"
+                            "return",
+                            viewModel.lexemes[startIndex+1]
                         )
                     )
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
@@ -34,7 +35,8 @@ class ReturnState :State(){
                                     whiskers(skippedLexemes) + "Ожидалось ключевое слово return",
                                     skippedLexemes[0].getStartIndex(),
                                     skippedLexemes.last().getEndIndex(),
-                                    "return"
+                                    "return",
+                                    viewModel.lexemes[startIndex+1]
                                 )
                             )
                             viewModel.errorLexemes.add(viewModel.lexemes[startIndex])

@@ -11,6 +11,7 @@ class Parser {
         viewModel.currentLexemeIndex = 0
         viewModel.expectedLexeme = LexemeType.KEY_WORD_FUN
         viewModel.scanResultText = ""
+        viewModel.errorLexemes.clear()
 
         if(viewModel.lexemes.size !=0){
             viewModel.currentState.Handle(viewModel)

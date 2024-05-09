@@ -38,13 +38,14 @@ class FunNameState: State() {
         if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.IDENTIFIER) {
             skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
             for (i in startIndex until viewModel.lexemes.size) {
-                if (IsBoundaryLexeme(viewModel)) {
+                if (IsBoundaryLexeme(viewModel) || isNextLexeme(viewModel)) {
                     viewModel.parserErrors.add(
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидался идентификатор",
                             skippedLexemes[0].getStartIndex(),
                             skippedLexemes.last().getEndIndex(),
-                            "A"
+                            "A",
+                            viewModel.lexemes[startIndex+1]
                         )
                     )
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
@@ -58,7 +59,8 @@ class FunNameState: State() {
                                     whiskers(skippedLexemes) + "Ожидался идентификатор",
                                     skippedLexemes[0].getStartIndex(),
                                     skippedLexemes.last().getEndIndex(),
-                                    "A"
+                                    "A",
+                                    viewModel.lexemes[startIndex+1]
                                 )
                             )
                             viewModel.errorLexemes.add(viewModel.lexemes[startIndex])

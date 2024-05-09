@@ -8,18 +8,19 @@ import src.main.kotlin.viewModel.ScannerViewModel
 
 class ArgNameState: State() {
     override fun Handle(viewModel: ScannerViewModel) {
-       /* var skippedLexemes = arrayListOf<Lexeme>()
+        var skippedLexemes = arrayListOf<Lexeme>()
         var startIndex = viewModel.currentLexemeIndex
         if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.IDENTIFIER) {
             skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
             for (i in startIndex until viewModel.lexemes.size) {
-                if (IsBoundaryLexeme(viewModel)) {
+                if (IsBoundaryLexeme(viewModel) || isNextLexeme(viewModel)) {
                     viewModel.parserErrors.add(
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидался идентификатор",
                             skippedLexemes[0].getStartIndex(),
                             skippedLexemes.last().getEndIndex(),
-                            "A"
+                            "A",
+                            viewModel.lexemes[startIndex+1]
                         )
                     )
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
@@ -33,7 +34,8 @@ class ArgNameState: State() {
                                     whiskers(skippedLexemes) + "Ожидался идентификатор",
                                     skippedLexemes[0].getStartIndex(),
                                     skippedLexemes.last().getEndIndex(),
-                                    "A"
+                                    "A",
+                                    viewModel.lexemes[startIndex+1]
                                 )
                             )
                             viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
@@ -52,6 +54,6 @@ class ArgNameState: State() {
         if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
             viewModel.currentState = ColonState()
             viewModel.currentState.Handle(viewModel)
-        }*/
+        }
     }
 }
