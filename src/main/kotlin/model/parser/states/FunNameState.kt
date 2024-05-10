@@ -7,31 +7,6 @@ import src.main.kotlin.model.parser.ParserError
 import src.main.kotlin.model.parser.intarfaces.State
 import src.main.kotlin.viewModel.ScannerViewModel
 class FunNameState: State() {
-    /*override fun Handle(viewModel: ScannerViewModel){
-        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
-            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
-        }
-        else{
-            viewModel.checkedLexeme ++
-            viewModel.expectedLexeme++
-
-        }
-        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
-            }
-            else{
-                viewModel.checkedLexeme ++
-                viewModel.expectedLexeme++
-            }
-        }
-
-        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            viewModel.currentState = OpenArgState()
-            viewModel.currentState.Handle(viewModel)
-        }
-    }*/
-
     override fun Handle(viewModel: ScannerViewModel){
         var skippedLexemes = arrayListOf<Lexeme>()
         var startIndex = viewModel.currentLexemeIndex
@@ -51,22 +26,18 @@ class FunNameState: State() {
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
                 } else {
-                    /*viewModel.currentLexemeIndex++
-                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER) {
-                            viewModel.parserErrors.add(
-                                ParserError(
-                                    whiskers(skippedLexemes) + "Ожидался идентификатор",
-                                    skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex(),
-                                    "A",
-                                    viewModel.lexemes[startIndex+1]
-                                )
-                            )
-                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
-                            break
-                        }
-                    }*/
+                    viewModel.parserErrors.add(
+                        ParserError(
+                            whiskers(skippedLexemes) + "Ожидался идентификатор",
+                            skippedLexemes[0].getStartIndex(),
+                            skippedLexemes.last().getEndIndex(),
+                            "A",
+                            viewModel.lexemes[startIndex+1]
+                        )
+                    )
+                    viewModel.currentLexemeIndex++
+                    viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
+                    break
                 }
             }
         }

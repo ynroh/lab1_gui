@@ -40,22 +40,6 @@ class FunTypeState: State() {
                     viewModel.currentLexemeIndex++
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
-                   /* viewModel.currentLexemeIndex++
-                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_TYPE) {
-                            viewModel.parserErrors.add(
-                                ParserError(
-                                    whiskers(skippedLexemes) + "Ожидался тип",
-                                    skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex(),
-                                    "Int",
-                                    viewModel.lexemes[startIndex+1]
-                                )
-                            )
-                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
-                            break
-                        }
-                    }*/
                 }
             }
         }

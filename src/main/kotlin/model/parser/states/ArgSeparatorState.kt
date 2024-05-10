@@ -42,24 +42,6 @@ class ArgSeparatorState: State() {
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     viewModel.currentLexemeIndex++
                     break
-                    /*viewModel.currentLexemeIndex++
-                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.CLOSE_C_SCOPE
-                            && viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.COMMA
-                        ) {
-                            viewModel.parserErrors.add(
-                                ParserError(
-                                    whiskers(skippedLexemes) + "Ожидалось ')'",
-                                    skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex(),
-                                    ")",
-                                    viewModel.lexemes[startIndex+1]
-                                )
-                            )
-                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
-                            break
-                        }
-                    }*/
                 }
             }
         }

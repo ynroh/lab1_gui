@@ -38,22 +38,6 @@ class ArgNameState: State() {
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     viewModel.currentLexemeIndex++
                     break
-                    /*viewModel.currentLexemeIndex++
-                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.IDENTIFIER) {
-                            viewModel.parserErrors.add(
-                                ParserError(
-                                    whiskers(skippedLexemes) + "Ожидался идентификатор",
-                                    skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex(),
-                                    "A",
-                                    viewModel.lexemes[startIndex+1]
-                                )
-                            )
-                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
-                            break
-                        }
-                    }*/
                 }
             }
         }

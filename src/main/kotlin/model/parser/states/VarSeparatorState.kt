@@ -58,24 +58,6 @@ class VarSeparatorState: State() {
                         viewModel.currentLexemeIndex++
                         viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                         break
-                       /* viewModel.currentLexemeIndex++
-                        if (viewModel.currentLexemeIndex < viewModel.lexemes.size) {
-                            if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.CLOSE_F_SCOPE
-                                && viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPERATOR
-                            ) {
-                                viewModel.parserErrors.add(
-                                    ParserError(
-                                        whiskers(skippedLexemes) + "Ожидалось '}'",
-                                        skippedLexemes[0].getStartIndex(),
-                                        skippedLexemes.last().getEndIndex(),
-                                        "}",
-                                        viewModel.lexemes[startIndex+1]
-                                    )
-                                )
-                                viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
-                                break
-                            }
-                        }*/
                     }
                 }
             } else {

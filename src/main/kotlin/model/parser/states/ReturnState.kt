@@ -40,22 +40,6 @@ class ReturnState :State(){
                     viewModel.currentLexemeIndex++
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
-                    /*viewModel.currentLexemeIndex++
-                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_RETURN) {
-                            viewModel.parserErrors.add(
-                                ParserError(
-                                    whiskers(skippedLexemes) + "Ожидалось ключевое слово return",
-                                    skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex(),
-                                    "return",
-                                    viewModel.lexemes[startIndex+1]
-                                )
-                            )
-                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
-                            break
-                        }
-                    }*/
                 }
             }
         }

@@ -11,13 +11,22 @@ class ErrorNeutralizer {
         while (index<viewModel.currentContent.length){
             for(i in 0 until viewModel.parserErrors.size){
                 if(index == viewModel.parserErrors[i].startIndex){
-                    //val value = if(viewModel.currentContent[viewModel.parserErrors[i].startIndex] == ' ') {viewModel.parserErrors[i].expected}  else {viewModel.parserErrors[i].expected + " "}
-                    if(viewModel.errorLexemes[i].getType() != LexemeType.INVALID_LEXEME
-                        && IsBoundaryLexeme(viewModel.parserErrors[i]) ) {
+                    if((viewModel.errorLexemes[i].getType() != LexemeType.INVALID_LEXEME)
+                        && IsNextLexeme(viewModel.parserErrors[i].expected,viewModel.errorLexemes[i] )) {
                         fixedSymbol = viewModel.parserErrors[i].expected + " " + viewModel.errorLexemes[i].getValue()
                     }
                     else{
-                        fixedSymbol = viewModel.parserErrors[i].expected
+                        val index = viewModel.lexemes.indexOf(viewModel.errorLexemes[i])
+                        if(index>0) {
+                            if (viewModel.lexemes[index - 1].getType() == viewModel.errorLexemes[i].getType())
+                                fixedSymbol += ""
+                            else{
+                                fixedSymbol = viewModel.parserErrors[i].expected
+                            }
+                        }
+                        else{
+                            fixedSymbol = viewModel.parserErrors[i].expected
+                        }
                     }
                     result += fixedSymbol
                     index = viewModel.parserErrors[i].endIndex + 1
@@ -76,6 +85,46 @@ class ErrorNeutralizer {
             "+" ->
                 if(parserError.nextLexeme.getType() == LexemeType.IDENTIFIER
                     || parserError.nextLexeme.getType() == LexemeType.CLOSE_F_SCOPE)
+                    return true
+            else -> {return false}
+        }
+        return false
+    }
+
+    fun IsNextLexeme(expected: String, currentLexeme: Lexeme): Boolean{
+        when(expected){
+            "fun" ->
+                if(currentLexeme.getType() == LexemeType.IDENTIFIER)
+                    return true
+            "A" ->
+                if(currentLexeme.getType() == LexemeType.OPEN_C_SCOPE
+                    || currentLexeme.getType() == LexemeType.COLON
+                    || currentLexeme.getType() == LexemeType.CLOSE_F_SCOPE
+                    || currentLexeme.getType() == LexemeType.OPERATOR)
+                    return true
+            ")" ->
+                if(currentLexeme.getType() == LexemeType.COLON)
+                    return true
+            ":" ->
+                if(currentLexeme.getType() == LexemeType.KEY_WORD_TYPE)
+                    return true
+            "Int" ->
+                if(currentLexeme.getType() == LexemeType.CLOSE_C_SCOPE
+                    || currentLexeme.getType() == LexemeType.COMMA
+                    || currentLexeme.getType() == LexemeType.OPEN_F_SCOPE)
+                    return true
+            "," ->
+                if(currentLexeme.getType() == LexemeType.IDENTIFIER)
+                    return true
+            "{" ->
+                if(currentLexeme.getType() == LexemeType.IDENTIFIER)
+                    return true
+            "return" ->
+                if(currentLexeme.getType() == LexemeType.IDENTIFIER
+                    || currentLexeme.getType() == LexemeType.OPERATOR)
+                    return true
+            "+" ->
+                if(currentLexeme.getType() == LexemeType.IDENTIFIER)
                     return true
             else -> {return false}
         }

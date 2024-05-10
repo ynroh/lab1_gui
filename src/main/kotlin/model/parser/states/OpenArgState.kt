@@ -10,37 +10,6 @@ import src.main.kotlin.viewModel.ScannerViewModel
 import java.util.LinkedList
 
 class OpenArgState:State(){
-   /* override fun Handle(viewModel: ScannerViewModel){
-        if(viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
-            viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
-        }
-        else{
-            viewModel.checkedLexeme ++
-            viewModel.expectedLexeme++
-        }
-        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
-            }
-            else{
-                viewModel.checkedLexeme ++
-                viewModel.expectedLexeme++
-
-            }
-        }
-
-        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            if (viewModel.lexemes[viewModel.checkedLexeme].getType() != viewModel.expectedInput[viewModel.expectedLexeme]) {
-                viewModel.skipIncorrectLexemes(viewModel.checkedLexeme, viewModel.expectedLexeme)
-            }
-            else{
-                viewModel.checkedLexeme ++
-                viewModel.expectedLexeme++
-
-            }
-        }
-    }*/
-
     override fun Handle(viewModel: ScannerViewModel){
         var skippedLexemes = arrayListOf<Lexeme>()
         var startIndex = viewModel.currentLexemeIndex
@@ -72,23 +41,6 @@ class OpenArgState:State(){
                     viewModel.currentLexemeIndex++
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
-
-                    /*viewModel.currentLexemeIndex++
-                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_C_SCOPE) {
-                            viewModel.parserErrors.add(
-                                ParserError(
-                                    whiskers(skippedLexemes) + "Ожидалось '('",
-                                    skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex(),
-                                    "(",
-                                    viewModel.lexemes[startIndex+1]
-                                )
-                            )
-                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
-                            break
-                        }
-                    }*/
                 }
             }
         }

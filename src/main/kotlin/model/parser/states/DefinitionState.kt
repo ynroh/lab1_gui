@@ -7,21 +7,6 @@ import src.main.kotlin.model.parser.intarfaces.State
 import src.main.kotlin.viewModel.ScannerViewModel
 
 class DefinitionState: State() {
-
-    /*override fun Handle(viewModel: ScannerViewModel){
-        if (viewModel.lexemes[0].getType() != viewModel.expectedInput[0]) {
-            viewModel.skipIncorrectLexemes(0, 0)
-        }
-        else {
-            viewModel.checkedLexeme +=1
-            viewModel.expectedLexeme++
-        }
-        if(viewModel.checkedLexeme<viewModel.lexemes.size) {
-            viewModel.currentState = FunNameState()
-            viewModel.currentState.Handle(viewModel)
-        }
-    }*/
-
     override fun Handle(viewModel: ScannerViewModel){
         var skippedLexemes = arrayListOf<Lexeme>()
         var startIndex = viewModel.currentLexemeIndex
@@ -53,22 +38,6 @@ class DefinitionState: State() {
                     viewModel.currentLexemeIndex++
                     viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
                     break
-                    /*viewModel.currentLexemeIndex++
-                    if(viewModel.currentLexemeIndex<viewModel.lexemes.size) {
-                        if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.KEY_WORD_FUN) {
-                            viewModel.parserErrors.add(
-                                ParserError(
-                                    whiskers(skippedLexemes) + "Ожидалось ключевое слово fun",
-                                    skippedLexemes[0].getStartIndex(),
-                                    skippedLexemes.last().getEndIndex(),
-                                    "fun",
-                                    viewModel.lexemes[startIndex+1]
-                                )
-                            )
-                            viewModel.errorLexemes.add(viewModel.lexemes[startIndex])
-                            break
-                        }
-                    }*/
                 }
             }
         }
