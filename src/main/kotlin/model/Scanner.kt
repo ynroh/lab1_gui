@@ -34,6 +34,7 @@ public class Scanner {
                     "Double" -> viewModel.lexemes.add(Lexeme(4, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
                     "Float" -> viewModel.lexemes.add(Lexeme(5, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
                     "Long" -> viewModel.lexemes.add(Lexeme(6, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
+                    "String" -> viewModel.lexemes.add(Lexeme(6, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
                     else -> {
                         viewModel.lexemes.add(Lexeme(15, LexemeType.IDENTIFIER, bitOfCode, firstChar, i))
                     }

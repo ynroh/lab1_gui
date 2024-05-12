@@ -16,6 +16,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import model.SemanticChecker
 import src.main.kotlin.model.ErrorNeutralizer
 import src.main.kotlin.model.Scanner
 import src.main.kotlin.viewModel.ScannerViewModel
@@ -70,7 +71,8 @@ fun main() = application {
     val undoRedoState = UndoRedoState()
     val viewModel = ScannerViewModel(undoRedoState)
     val scanner = Scanner()
-    val parser = Parser()
+    val semanticChecker = SemanticChecker()
+    val parser = Parser(semanticChecker)
     val fixer = ErrorNeutralizer()
 
     Window(onCloseRequest = {

@@ -23,6 +23,7 @@ class ScannerViewModel(undoRedoState: UndoRedoState) {
     var scanResultText by mutableStateOf("")
     var lexemes = mutableListOf<Lexeme>()
     var parserErrors = mutableListOf<ParserError>()
+    var semanticErrors = mutableListOf<String>()
     var currentState: State = DefinitionState()
 
     var errorLexemes = mutableListOf<Lexeme>()
