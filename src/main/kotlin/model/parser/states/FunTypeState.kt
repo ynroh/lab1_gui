@@ -14,7 +14,7 @@ class FunTypeState: State() {
         if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.KEY_WORD_TYPE) {
             skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
             for (i in startIndex until viewModel.lexemes.size) {
-                if (IsBoundaryLexeme(viewModel) || isNextLexeme(viewModel)) {
+                if (IsBoundaryLexeme(viewModel, skippedLexemes) || isNextLexeme(viewModel)) {
                     viewModel.parserErrors.add(
                         ParserError(
                             whiskers(skippedLexemes)+"Ожидался тип",

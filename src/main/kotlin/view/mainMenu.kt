@@ -175,7 +175,7 @@ fun correctionItem(viewModel: ScannerViewModel){
 }
 
 @Composable
-fun textItem(){
+fun textItem(viewModel:ScannerViewModel){
     var expanded by remember { mutableStateOf(false) }
     TextButton(onClick = { expanded = true },
         modifier = Modifier.height(32.dp)) {
@@ -203,7 +203,10 @@ fun textItem(){
             DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
                 Text("Диагностика и нейтрализация ошибок", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                viewModel.currentContent = "fun sum(a: Int, b: Int): Int {\n" +
+                    "    return a + b\n" +
+                    "}\n" }, modifier = Modifier.height(30.dp)) {
                 Text("Тестовый пример", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {

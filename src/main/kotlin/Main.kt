@@ -36,7 +36,7 @@ fun App(viewModel: ScannerViewModel, scanner: Scanner, parser: Parser, fixer: Er
         ) {
             fileItem(viewModel)
             correctionItem(viewModel)
-            textItem()
+            textItem(viewModel)
             TextButton(
                 onClick = {
                     scanner.analyzeCode(viewModel)

@@ -14,7 +14,7 @@ class VarSeparatorState: State() {
             if (viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.CLOSE_F_SCOPE) {
                 viewModel.parserErrors.add(
                     ParserError(
-                        "Ошибка: ${viewModel.lexemes[viewModel.currentLexemeIndex].getValue()}. " + "Ожидалось '}'",
+                        "Ошибка: ${viewModel.lexemes[viewModel.currentLexemeIndex].getValue().replace("\n","")}. " + "Ожидалось '}'",
                         viewModel.lexemes[viewModel.currentLexemeIndex].getStartIndex(),
                         viewModel.lexemes[viewModel.currentLexemeIndex].getEndIndex(),
                         "}",
@@ -31,7 +31,7 @@ class VarSeparatorState: State() {
             ) {
                 skippedLexemes.add(viewModel.lexemes[viewModel.currentLexemeIndex])
                 for (i in startIndex until viewModel.lexemes.size) {
-                    if (IsBoundaryLexeme(viewModel) || isNextLexeme(viewModel)) {
+                    if (IsBoundaryLexeme(viewModel,skippedLexemes) || isNextLexeme(viewModel)) {
                         viewModel.parserErrors.add(
                             ParserError(
                                 whiskers(skippedLexemes) + "Ожидалось '}'",

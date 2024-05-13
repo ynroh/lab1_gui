@@ -20,7 +20,13 @@ public class Scanner {
             {
                val firstChar = i;
 
-                while ((i + 1) < inputString.length && ((inputString[i + 1].isLetterOrDigit()) || inputString[i + 1] == '_'))
+                /*while ((i + 1) < inputString.length && ((inputString[i + 1].isLetterOrDigit()) || inputString[i + 1] == '_'))
+                {
+                    i++;
+                    bitOfCode += inputString[i];
+                }*/
+
+                while ((i + 1) < inputString.length && (!isSeparator(inputString[i + 1])) && inputString[i + 1]!='\n')
                 {
                     i++;
                     bitOfCode += inputString[i];
@@ -36,7 +42,18 @@ public class Scanner {
                     "Long" -> viewModel.lexemes.add(Lexeme(6, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
                     "String" -> viewModel.lexemes.add(Lexeme(6, LexemeType.KEY_WORD_TYPE, bitOfCode, firstChar, i))
                     else -> {
-                        viewModel.lexemes.add(Lexeme(15, LexemeType.IDENTIFIER, bitOfCode, firstChar, i))
+                        if(bitOfCode[0].isDigit()) {
+                            viewModel.lexemes.add(Lexeme(20, LexemeType.INVALID_LEXEME, bitOfCode, firstChar, i))
+                        }
+                        else {
+                            val pattern = Regex("^[a-zA-Z0-9_]*$")
+                            if (!pattern.matches(bitOfCode)) {
+                                viewModel.lexemes.add(Lexeme(20, LexemeType.INVALID_LEXEME, bitOfCode, firstChar, i))
+                            }
+                            else {
+                                viewModel.lexemes.add(Lexeme(15, LexemeType.IDENTIFIER, bitOfCode, firstChar, i))
+                            }
+                        }
                     }
                 }
                 bitOfCode = String()
@@ -45,7 +62,12 @@ public class Scanner {
             else if(inputString[i].isDigit()){
                 val firstChar = i;
 
-                while ((i + 1) < inputString.length && ((inputString[i + 1].isLetterOrDigit()) || inputString[i + 1] == '_'))
+                /*while ((i + 1) < inputString.length && ((inputString[i + 1].isLetterOrDigit()) || inputString[i + 1] == '_'))
+                {
+                    i++;
+                    bitOfCode += inputString[i];
+                }*/
+                while ((i + 1) < inputString.length && (!isSeparator(inputString[i + 1])) && inputString[i + 1]!='\n')
                 {
                     i++;
                     bitOfCode += inputString[i];

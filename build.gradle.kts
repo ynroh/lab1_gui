@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("jvm")
@@ -24,6 +25,7 @@ dependencies {
     implementation(compose.materialIconsExtended)
 }
 
+
 compose.desktop {
     application {
         mainClass = "MainKt"
@@ -33,5 +35,7 @@ compose.desktop {
             packageName = "lab1_gui"
             packageVersion = "1.0.0"
         }
+
+
     }
 }
