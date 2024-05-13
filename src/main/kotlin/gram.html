@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2 Разработка грамматики</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>2 Разработка грамматики</h2>
+    <p>Определим грамматику функций языка Kotlin G[‹Def›] в нотации Хомского с продукциями P:</p>
+    <pre>
+DEF → ‘fun’ SPACE 
+SPACE → ‘ ‘ NAME
+NAME →  Б { Б | Ц | ‘_’ }  ‘(‘ OPENARG 
+OPENARG → ARGUMENT
+ARGUMENT →  Б { Б | Ц | ‘_’ } ‘:’ TYPEARG 
+TYPEARG →  ‘Int’ | ‘Double’ | ‘Long’ | ‘Float’ COMMA | COLON
+COMMA  →  ‘,’ OPENARG 
+COLON →  ‘)’ ‘:’ TYPEFUN
+TYPEFUN → ‘Int’ | ‘Double’ | ‘Long’ | ‘Float’ OPENFUNC
+OPENFUNC → ‘{‘ RETURN
+RETURN →  ‘return’  EXPR
+EXPR → ‘ ‘ ARG1
+ARG1 →  Б { Б | Ц | ‘_’ } SIGN 
+SIGN →  ‘+’ | ‘-‘ | ‘*’ | ‘/’ ARG2
+ARG2 →  Б { Б | Ц | ‘_’  ENDBODY | SIGN 
+ENDBODY→  ‘}’ END
+END →  ‘;’
+Б → ‘a’ | ‘b’ | … | ‘z’ | ‘A’ | ‘B’ | … | ‘Z’
+Ц → ‘0’ | ‘1’ | … | ‘9’
+    </pre>
+    <p>Следуя введенному формальному определению грамматики, представим G[‹Def›] ее составляющими:</p>
+    <pre>
+Z = ‹Def›;
+VТ = {‘ fun’ ‘return’ ‘Int’ ‘Double’ ‘Long’ ‘Float’ ‘a’…’z’  ‘A’…’Z’ ‘0’…’9’ ‘(‘ ‘ ‘ ‘:’ ‘,’ ‘)’ ‘{‘ ‘_’ ‘+’  ‘-‘  ‘*’  ‘/’  ‘}’ }
+VN = { DEF, SPACE, NAME,  OPENARG, ARGUMENT, TYPEARG , COMMA ,COLON, TYPEFUN,  OPENFUNC, RETURN, EXPR, ARG1, SIGN , ARG2, ENDBODY,  END,  Б, Ц}
+    </pre>
+</body>
+</html>

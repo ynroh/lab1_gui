@@ -12,7 +12,8 @@ enum class LexemeType{
     IDENTIFIER,
     OPERATOR,
     INVALID_LEXEME,
-    SEPARATOR
+    SEPARATOR,
+    END
 }
 public class Lexeme(
     private val conditionalCode: Int,

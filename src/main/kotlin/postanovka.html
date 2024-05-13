@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Постановка задачи</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>1 Постановка задачи</h1>
+    <p>Функция – это фрагмент кода, который выполняет определенную задачу или операцию.</p>
+    <p>Формат записи:</p>
+    <pre>
+"fun имя_функции(аргумент1: тип_аргумента1, аргумент2: тип_аргумента2): тип_функции{
+         return аргумент1 + аргумент2
+}"
+    </pre>
+    <p>Пример:</p>
+    <pre>
+fun sum(a : Int, b: Int): Int { 
+    return a + b 
+}
+    </pre>
+    <p>В связи с разработанной автоматной грамматикой G[‹Def›] синтаксический анализатор (парсер) десятичных констант будет считать верными следующие записи функций:</p>
+    <ol>
+        <li>
+            <pre>
+fun sum(a : Int, b: Double): Double{ 
+    return a + b 
+}
+            </pre>
+        </li>
+        <li>
+            <pre>
+fun sum(a : Int, b: Int, c: Int): Int { 
+    return a + b + c
+}
+            </pre>
+        </li>
+        <li>
+            <pre>
+fun sum(a : Int, b: Int): Int { 
+    return a * b 
+}
+            </pre>
+        </li>
+    </ol>
+    <p>Справка (руководство пользователя) представлена в Приложении А. Информация о программе представлена в Приложении Б.</p>
+</body>
+</html>

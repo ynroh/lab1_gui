@@ -26,7 +26,7 @@ public class Scanner {
                     bitOfCode += inputString[i];
                 }*/
 
-                while ((i + 1) < inputString.length && (!isSeparator(inputString[i + 1])) && inputString[i + 1]!='\n')
+                while ((i + 1) < inputString.length && (!isSeparator(inputString[i + 1])) && inputString[i + 1]!='\n' && inputString[i + 1] != ';')
                 {
                     i++;
                     bitOfCode += inputString[i];
@@ -67,7 +67,7 @@ public class Scanner {
                     i++;
                     bitOfCode += inputString[i];
                 }*/
-                while ((i + 1) < inputString.length && (!isSeparator(inputString[i + 1])) && inputString[i + 1]!='\n')
+                while ((i + 1) < inputString.length && (!isSeparator(inputString[i + 1])) && inputString[i + 1]!='\n' && inputString[i + 1] != ';')
                 {
                     i++;
                     bitOfCode += inputString[i];
@@ -111,9 +111,15 @@ public class Scanner {
                 val firstChar = i
                 viewModel.lexemes.add(Lexeme(13, LexemeType.SEPARATOR, inputString[i].toString(), firstChar, i))
             }
+
+            else if(inputString[i] == ';'){
+                val firstChar = i
+                viewModel.lexemes.add(Lexeme(13, LexemeType.END, inputString[i].toString(), firstChar, i))
+            }
+
             else {
                 val firstChar = i
-                while ((i + 1) < inputString.length && (!inputString[i + 1].isLetterOrDigit() && !isOperator(inputString[i + 1]) && !isSeparator(inputString[i + 1]))) {
+                while ((i + 1) < inputString.length && (!inputString[i + 1].isLetterOrDigit() && !isOperator(inputString[i + 1]) && !isSeparator(inputString[i + 1]) && inputString[i + 1] != ';')) {
                     i++
                     bitOfCode += inputString[i]
                 }

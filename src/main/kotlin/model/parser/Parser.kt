@@ -21,13 +21,13 @@ class Parser(
             viewModel.currentState.Handle(viewModel)
         }
 
-        if(viewModel.lexemes.last().getValue()!="\n}" && viewModel.lexemes.last().getValue()!="}" && (!viewModel.parserErrors.any { it.expected == "}" })){
+        if(viewModel.lexemes.last().getValue()!=";" && (!viewModel.parserErrors.any { it.expected == ";" })){
             viewModel.parserErrors.add(
                 ParserError(
-                    "Ожидалось }",
+                    "Ожидалось ;",
                     viewModel.lexemes.last().getEndIndex() + 1,
                     viewModel.lexemes.last().getEndIndex() + 1,
-                    "}",
+                    ";",
                     nextLexeme = viewModel.lexemes.last()
                 )
             )
@@ -40,6 +40,10 @@ class Parser(
             }
         }
         else {
+            viewModel.scanResultText = "Ошибок не найдено"
+        }
+
+        /*else {
             semanticChecker.checkSemantics(viewModel)
             if(viewModel.semanticErrors.size > 0) {
                 for (i in viewModel.semanticErrors) {
@@ -49,7 +53,7 @@ class Parser(
             else {
                 viewModel.scanResultText = "Ошибок не найдено"
             }
-        }
+        }*/
     }
 
 

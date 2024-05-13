@@ -2,6 +2,8 @@ package src.main.kotlin.model.parser.intarfaces
 
 import src.main.kotlin.model.Lexeme
 import src.main.kotlin.model.LexemeType
+import src.main.kotlin.model.parser.states.ArgNameState
+import src.main.kotlin.model.parser.states.FunNameState
 import src.main.kotlin.viewModel.ScannerViewModel
 
 abstract class State {
@@ -9,38 +11,31 @@ abstract class State {
     final fun IsBoundaryLexeme(viewModel: ScannerViewModel, skippedLexemes: ArrayList<Lexeme>): Boolean{
         var bound = 2
 
-
-        /*if(viewModel.expectedLexeme == LexemeType.CLOSE_C_SCOPE){
+        /*if(viewModel.expectedLexeme == LexemeType.IDENTIFIER && viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_C_SCOPE){
             var temp  = arrayListOf<Lexeme>()
-            for(i in 1 until bound) {
-                if(viewModel.currentLexemeIndex+i < viewModel.lexemes.size) {
-                    if(viewModel.lexemes[viewModel.currentLexemeIndex+i].getType() == viewModel.expectedLexeme
-                        || viewModel.lexemes[viewModel.currentLexemeIndex+i].getType() == LexemeType.COMMA) {
+            for (i in 1 until bound) {
+                if (viewModel.currentLexemeIndex + i < viewModel.lexemes.size) {
+                    if (viewModel.lexemes[viewModel.currentLexemeIndex + i].getType() == viewModel.expectedLexeme) {
                         viewModel.currentLexemeIndex += i + 1
-                        *//*if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPEN_C_SCOPE) {
-                            viewModel.currentLexemeIndex += i + 1
-                        }*//*
-                        for(i in temp){
+                        for (i in temp) {
                             skippedLexemes.add(i)
                         }
                         return true
-                    }
-                    else{
-                        temp.add(viewModel.lexemes[viewModel.currentLexemeIndex+i])
+                    } else {
+                        temp.add(viewModel.lexemes[viewModel.currentLexemeIndex + i])
                     }
                 }
             }
         }*/
 
        // else {
-            var temp  = arrayListOf<Lexeme>()
+            var temp = arrayListOf<Lexeme>()
             for (i in 1 until bound) {
                 if (viewModel.currentLexemeIndex + i < viewModel.lexemes.size) {
                     if (viewModel.lexemes[viewModel.currentLexemeIndex + i].getType() == viewModel.expectedLexeme) {
-                        viewModel.currentLexemeIndex += i + 1
-                        /*if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPEN_C_SCOPE) {
+                        if (!(viewModel.currentState is FunNameState && viewModel.lexemes[viewModel.currentLexemeIndex].getType() == LexemeType.OPEN_C_SCOPE)) {
                             viewModel.currentLexemeIndex += i + 1
-                        }*/
+                        }
                         for (i in temp) {
                             skippedLexemes.add(i)
                         }

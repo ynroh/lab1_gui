@@ -40,6 +40,7 @@ fun fileItem(viewModel: ScannerViewModel){
             onDismissRequest = { expanded = false }
         ){
             DropdownMenuItem(onClick = {
+                expanded = false
                 if( viewModel.currentContent != "" && !viewModel.isChangesSaved){
                     isCreateCommand = true
                     showDialog = true}
@@ -47,6 +48,7 @@ fun fileItem(viewModel: ScannerViewModel){
                 Text("Создать", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 if(viewModel.currentContent != "" && !viewModel.isChangesSaved){
                     isOpenCommand = true
                     showDialog = true
@@ -54,6 +56,7 @@ fun fileItem(viewModel: ScannerViewModel){
                 Text("Открыть", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 if(viewModel.currentFilePath == "")
                     SaveFileAs(viewModel)
                 else
@@ -62,11 +65,13 @@ fun fileItem(viewModel: ScannerViewModel){
                 Text("Сохранить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 SaveFileAs(viewModel)
             }, modifier = Modifier.height(30.dp)){
                 Text("Сохранить как", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 if(viewModel.currentContent != "" && !viewModel.isChangesSaved) {
                     isCloseCommand = true
                     showDialog = true
@@ -135,38 +140,44 @@ fun correctionItem(viewModel: ScannerViewModel){
             onDismissRequest = { expanded = false }
         ){
             DropdownMenuItem(onClick = {
+                expanded = false
                 viewModel.undoRedoState.undo()
             }, modifier = Modifier.height(30.dp)){
                 Text("Отменить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 viewModel.undoRedoState.redo()
             }, modifier = Modifier.height(30.dp)){
                 Text("Повторить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 CopyToClipboard(viewModel.currentContent)
                 viewModel.currentContent = ""
                                        }, modifier = Modifier.height(30.dp)){
                 Text("Вырезать", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 CopyToClipboard(viewModel.currentContent)
                                        }, modifier = Modifier.height(30.dp)){
                 Text("Копировать", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 viewModel.currentContent = PasteFromClipboard()
             }, modifier = Modifier.height(30.dp)){
                 Text("Вставить", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 viewModel.currentContent = ""
                 viewModel.undoRedoState.input = TextFieldValue("")
             }, modifier = Modifier.height(30.dp)){
                 Text("Удалить", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/}, modifier = Modifier.height(30.dp)){
+            DropdownMenuItem(onClick = {expanded = false}, modifier = Modifier.height(30.dp)){
                 Text("Выделить всё", fontSize = 14.sp)
             }
         }
@@ -188,31 +199,113 @@ fun textItem(viewModel:ScannerViewModel){
             onDismissRequest = { expanded = false },
             modifier = Modifier.width(300.dp)
         ) {
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                expanded = false
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\postanovka.html"
+
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+
+            }, modifier = Modifier.height(30.dp)) {
                 Text("Постановка задачи", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                expanded = false
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\gram.html"
+
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+                }, modifier = Modifier.height(30.dp)) {
                 Text("Грамматика", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                expanded = false
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\klass.html"
+
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+            }, modifier = Modifier.height(30.dp)) {
                 Text("Классификация грамматики", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                expanded = false
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\method.html"
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+            }, modifier = Modifier.height(30.dp)) {
                 Text("Метод анализа", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                expanded = false
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\ar.html"
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+            }, modifier = Modifier.height(30.dp)) {
                 Text("Диагностика и нейтрализация ошибок", fontSize = 14.sp)
             }
             DropdownMenuItem(onClick = {
+                expanded = false
                 viewModel.currentContent = "fun sum(a: Int, b: Int): Int {\n" +
                     "    return a + b\n" +
-                    "}\n" }, modifier = Modifier.height(30.dp)) {
+                    "};" }, modifier = Modifier.height(30.dp)) {
                 Text("Тестовый пример", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                expanded = false
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\sourses.html"
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+            }, modifier = Modifier.height(30.dp)) {
                 Text("Список литературы", fontSize = 14.sp)
             }
-            DropdownMenuItem(onClick = {/*TO DO*/ }, modifier = Modifier.height(30.dp)) {
+            DropdownMenuItem(onClick = {
+                expanded = false
+                val htmlFilePath = "D:\\Study\\Compiler theory\\lab1_gui\\src\\main\\kotlin\\code.html"
+                try {
+                    val htmlFile = File(htmlFilePath)
+                    Desktop.getDesktop().browse(htmlFile.toURI())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                }
+            }, modifier = Modifier.height(30.dp)) {
                 Text("Исходный код программы", fontSize = 14.sp)
             }
         }

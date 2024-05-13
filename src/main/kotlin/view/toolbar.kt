@@ -102,8 +102,10 @@ fun Toolbar(viewModel: ScannerViewModel, scanner: Scanner, parser: Parser){
             Icon(Icons.Default.ContentPaste, "Paste")
         }
         IconButton(onClick = {
-            scanner.analyzeCode(viewModel)
-            parser.parseCode(viewModel)
+            if(viewModel.currentContent.length > 0) {
+                scanner.analyzeCode(viewModel)
+                parser.parseCode(viewModel)
+            }
 
            }, modifier = Modifier.height(14.dp))
         {
