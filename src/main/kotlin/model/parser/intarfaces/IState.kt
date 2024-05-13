@@ -7,26 +7,50 @@ import src.main.kotlin.viewModel.ScannerViewModel
 abstract class State {
     abstract fun Handle(viewModel: ScannerViewModel)
     final fun IsBoundaryLexeme(viewModel: ScannerViewModel, skippedLexemes: ArrayList<Lexeme>): Boolean{
-        var bound = 3
-        var temp  = arrayListOf<Lexeme>()
+        var bound = 2
 
-        for(i in 1 until bound) {
-            if(viewModel.currentLexemeIndex+i < viewModel.lexemes.size) {
-                if(viewModel.lexemes[viewModel.currentLexemeIndex+i].getType() == viewModel.expectedLexeme) {
-                    viewModel.currentLexemeIndex += i + 1
-                    /*if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPEN_C_SCOPE) {
+
+        /*if(viewModel.expectedLexeme == LexemeType.CLOSE_C_SCOPE){
+            var temp  = arrayListOf<Lexeme>()
+            for(i in 1 until bound) {
+                if(viewModel.currentLexemeIndex+i < viewModel.lexemes.size) {
+                    if(viewModel.lexemes[viewModel.currentLexemeIndex+i].getType() == viewModel.expectedLexeme
+                        || viewModel.lexemes[viewModel.currentLexemeIndex+i].getType() == LexemeType.COMMA) {
                         viewModel.currentLexemeIndex += i + 1
-                    }*/
-                    for(i in temp){
-                        skippedLexemes.add(i)
+                        *//*if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPEN_C_SCOPE) {
+                            viewModel.currentLexemeIndex += i + 1
+                        }*//*
+                        for(i in temp){
+                            skippedLexemes.add(i)
+                        }
+                        return true
                     }
-                    return true
-                }
-                else{
-                    temp.add(viewModel.lexemes[viewModel.currentLexemeIndex+i])
+                    else{
+                        temp.add(viewModel.lexemes[viewModel.currentLexemeIndex+i])
+                    }
                 }
             }
-        }
+        }*/
+
+       // else {
+            var temp  = arrayListOf<Lexeme>()
+            for (i in 1 until bound) {
+                if (viewModel.currentLexemeIndex + i < viewModel.lexemes.size) {
+                    if (viewModel.lexemes[viewModel.currentLexemeIndex + i].getType() == viewModel.expectedLexeme) {
+                        viewModel.currentLexemeIndex += i + 1
+                        /*if(viewModel.lexemes[viewModel.currentLexemeIndex].getType() != LexemeType.OPEN_C_SCOPE) {
+                            viewModel.currentLexemeIndex += i + 1
+                        }*/
+                        for (i in temp) {
+                            skippedLexemes.add(i)
+                        }
+                        return true
+                    } else {
+                        temp.add(viewModel.lexemes[viewModel.currentLexemeIndex + i])
+                    }
+                }
+            }
+        //}
         return false
     }
 
